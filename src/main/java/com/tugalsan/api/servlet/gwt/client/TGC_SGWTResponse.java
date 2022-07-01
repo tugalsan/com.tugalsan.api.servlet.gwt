@@ -3,6 +3,7 @@ package com.tugalsan.api.servlet.gwt.client;
 import com.google.gwt.user.client.rpc.*;
 import com.tugalsan.api.log.client.*;
 import com.tugalsan.api.executable.client.*;
+import com.tugalsan.api.unsafe.client.*;
 
 public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallback, IsSerializable {
 
@@ -61,16 +62,15 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
 
     @Override
     final public void onSuccess(Object response) {
-        
         if (response == null) {
-            onFailure(new RuntimeException("ERROR: onSuccess -> response==null"));
+            onFailure(TGS_UnSafe.createException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", "ERROR: onSuccess -> response==null"));
             return;
         } else if (((T) response).getExceptionMessage() != null) {
-            onFailure(new RuntimeException(((T) response).getExceptionMessage()));
+            onFailure(TGS_UnSafe.createException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", ((T) response).getExceptionMessage()));
             return;
         }
-        if (!(response instanceof TGS_SGWTFuncBase)){
-            onFailure(new RuntimeException("ERROR: !(response instanceof TGS_SGWTFuncBase): " + response));
+        if (!(response instanceof TGS_SGWTFuncBase)) {
+            onFailure(TGS_UnSafe.createException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", "ERROR: !(response instanceof " + TGS_SGWTFuncBase.class.getSimpleName() + "): " + response));
             return;
         }
         executor.execute((T) response);

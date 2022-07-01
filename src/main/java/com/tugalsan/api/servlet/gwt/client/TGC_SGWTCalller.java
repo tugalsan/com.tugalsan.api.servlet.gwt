@@ -29,7 +29,7 @@ public class TGC_SGWTCalller {
     public static <T extends TGS_SGWTFuncBase> T syncPromise(T func) {
         Promise<String> promise = new Promise((resolve, reject) -> {
             Promise.resolve("done");
-            Promise.reject(new RuntimeException("Whoops!"));
+            Promise.reject(new RE("Whoops!"));
         });
 //        promise.then((resolve)->{});
         return null;
@@ -48,7 +48,7 @@ public class TGC_SGWTCalller {
                 @Override
                 public void onSuccess(TGS_SGWTFuncBase f) {
                     if (f == null) {
-                        onFailure(new RuntimeException("onSuccess." + TGS_SGWTFuncBase.class.getSimpleName() + " == null"));
+                        onFailure(new RE("onSuccess." + TGS_SGWTFuncBase.class.getSimpleName() + " == null"));
                     } else {
                         future.complete(f);
                     }

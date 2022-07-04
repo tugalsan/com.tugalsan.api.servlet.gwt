@@ -37,7 +37,7 @@ public class TGC_SGWTCalller {
 
     @Deprecated //NOT SUPPORTED YET
     public static <T extends TGS_SGWTFuncBase> T syncCompletableFuture(T func) {
-        try {
+        tryy {
             var future = new CompletableFuture<TGS_SGWTFuncBase>();
             TGC_SGWTService.getServiceInstance().call(func, new AsyncCallback<TGS_SGWTFuncBase>() {
                 @Override

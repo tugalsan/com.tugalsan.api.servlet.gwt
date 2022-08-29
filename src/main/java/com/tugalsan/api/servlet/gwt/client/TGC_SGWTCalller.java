@@ -5,7 +5,7 @@ import com.tugalsan.api.log.client.*;
 
 public class TGC_SGWTCalller {
 
-    final private static TGC_Log d = TGC_Log.of(TGC_SGWTCalller.class.getSimpleName());
+    final private static TGC_Log d = TGC_Log.of(TGC_SGWTCalller.class);
 
     public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_ExecutableType1<T> executor) {
         async(func, executor, null, null);

@@ -15,7 +15,7 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
         return "500  ";
     }
 
-    final private static TGC_Log d = TGC_Log.of(TGC_SGWTResponse.class.getSimpleName());
+    final private static TGC_Log d = TGC_Log.of(TGC_SGWTResponse.class);
 
     public TGC_SGWTResponse() {
     }

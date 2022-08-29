@@ -7,7 +7,7 @@ import com.tugalsan.api.pack.client.*;
 
 public class TS_SGWTExecutorList {
 
-    final private static TS_Log d = TS_Log.of(TS_SGWTExecutorList.class.getSimpleName());
+    final private static TS_Log d = TS_Log.of(TS_SGWTExecutorList.class);
 
     public static TS_ListSync<TGS_Pack2<String, TS_SGWTExecutor>> SYNC = new TS_ListSync();
 

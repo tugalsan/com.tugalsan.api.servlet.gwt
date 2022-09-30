@@ -4,6 +4,7 @@ module com.tugalsan.api.servlet.gwt {
     requires com.tugalsan.api.executable;
     requires com.tugalsan.api.unsafe;
     requires com.tugalsan.api.validator;
+    requires com.tugalsan.api.thread;
     requires com.tugalsan.api.stream;
     requires com.tugalsan.api.network;
     requires com.tugalsan.api.log;

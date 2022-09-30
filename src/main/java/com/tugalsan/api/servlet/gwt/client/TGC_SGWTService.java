@@ -2,7 +2,6 @@ package com.tugalsan.api.servlet.gwt.client;
 
 import com.google.gwt.core.client.*;
 import com.google.gwt.user.client.rpc.*;
-import com.tugalsan.api.list.client.*;
 
 public class TGC_SGWTService {
 
@@ -10,7 +9,7 @@ public class TGC_SGWTService {
     final public static String LOC_NAME = "g";//TS_SGWTWebServlet need it static
 
     public static TGS_SGWTServiceInterfaceAsync getServiceInstance() {
-        var exists = SYNC.get();
+        var exists = SYNC;
         if (exists != null) {
             return exists;
         }
@@ -18,8 +17,8 @@ public class TGC_SGWTService {
         var endpoint = (ServiceDefTarget) exists;
         var moduleRelativeURL = GWT.getModuleBaseURL() + LOC_NAME;
         endpoint.setServiceEntryPoint(moduleRelativeURL);
-        SYNC.set(exists);
+        SYNC = exists;
         return exists;
     }
-    private static TGS_ListSyncItem<TGS_SGWTServiceInterfaceAsync> SYNC = new TGS_ListSyncItem();
+    private static volatile TGS_SGWTServiceInterfaceAsync SYNC;
 }

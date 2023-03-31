@@ -33,20 +33,12 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
     final public void onFailure(Throwable caught) {
         if (caught == null) {
             d.ce("onFailure", "caught == null");
-            return;
-        }
-        var msg = caught.getMessage();
-        if (msg == null) {
+        } else if (caught.getMessage() == null) {
             d.ce("onFailure", "caught.getMessage() == null");
-            return;
-        }
-        if (msg.startsWith(PREFIX_SERVER_DOWN_MESSAGE())) {
+        } else if (caught.getMessage().startsWith(PREFIX_SERVER_DOWN_MESSAGE())) {
             d.ce("onFailure", "HATA: Bağlantı koptu; güncelleniyor olabilir; network bağlantınızı kontrol edip, bekleyiniz...");
-            return;
-        }
-        if (msg.startsWith(PREFIX_SERVER_INTERNAL_MESSAGE())) {
+        } else if (caught.getMessage().startsWith(PREFIX_SERVER_INTERNAL_MESSAGE())) {
             d.ce("onFailure", "HATA: Server makinesinde hata oluştu! Ayrıntılar için server makinesinin hata kayıtlarına bakınız. (Hiç işlem yapamıyorsanız, kullanıcı girişinizi kontrol edebilirsiniz.)");
-            return;
         }
         if (onFail != null) {
             onFail.execute(caught);

@@ -45,11 +45,7 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
             return;
         }
         if (msg.startsWith(PREFIX_SERVER_INTERNAL_MESSAGE())) {
-            d.ce("onFailure", "HATA: Server makinesinde hata oluştu! Ayrıntılar için server makinesinin hata kayıtlarına bakınız.");
-            var tmp = d.infoEnable;
-            d.infoEnable = true;
-            d.ci("onFailure", "BİLGİ: Hiç işlem yapamıyorsanız, kullanıcı girişinizi kontrol edebilirsiniz.");
-            d.infoEnable = tmp;
+            d.ce("onFailure", "HATA: Server makinesinde hata oluştu! Ayrıntılar için server makinesinin hata kayıtlarına bakınız. (Hiç işlem yapamıyorsanız, kullanıcı girişinizi kontrol edebilirsiniz.)");
             return;
         }
         if (onFail != null) {

@@ -2,7 +2,7 @@ package com.tugalsan.api.servlet.gwt.client;
 
 import com.google.gwt.user.client.rpc.*;
 import com.tugalsan.api.log.client.*;
-import com.tugalsan.api.executable.client.*;
+import com.tugalsan.api.runnable.client.*;
 import com.tugalsan.api.unsafe.client.*;
 
 public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallback, IsSerializable {
@@ -20,14 +20,14 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
     public TGC_SGWTResponse() {
     }
 
-    public TGC_SGWTResponse(TGS_ExecutableType1<T> executor, TGS_ExecutableType1<Throwable> onFail, TGS_Executable closure) {
-        this.executor = executor;
+    public TGC_SGWTResponse(TGS_RunnableType1<T> runnable, TGS_RunnableType1<Throwable> onFail, TGS_Runnable closure) {
+        this.runnable = runnable;
         this.onFail = onFail;
         this.closure = closure;
     }
-    private TGS_ExecutableType1<T> executor;
-    private TGS_ExecutableType1<Throwable> onFail;
-    private TGS_Executable closure;
+    private TGS_RunnableType1<T> runnable;
+    private TGS_RunnableType1<Throwable> onFail;
+    private TGS_Runnable closure;
 
     @Override
     final public void onFailure(Throwable caught) {
@@ -41,29 +41,29 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
             d.ce("onFailure", "HATA: Server makinesinde hata oluştu! Ayrıntılar için server makinesinin hata kayıtlarına bakınız. (Hiç işlem yapamıyorsanız, kullanıcı girişinizi kontrol edebilirsiniz.)");
         }
         if (onFail != null) {
-            onFail.execute(caught);
+            onFail.run(caught);
         }
         if (closure != null) {
-            closure.execute();
+            closure.run();
         }
     }
 
     @Override
     final public void onSuccess(Object response) {
         if (response == null) {
-            onFailure(TGS_UnSafe.createException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", "ERROR: onSuccess -> response==null"));
+            onFailure(TGS_UnSafe.toRuntimeException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", "ERROR: onSuccess -> response==null"));
             return;
         } else if (((T) response).getExceptionMessage() != null) {
-            onFailure(TGS_UnSafe.createException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", ((T) response).getExceptionMessage()));
+            onFailure(TGS_UnSafe.toRuntimeException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", ((T) response).getExceptionMessage()));
             return;
         }
         if (!(response instanceof TGS_SGWTFuncBase)) {
-            onFailure(TGS_UnSafe.createException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", "ERROR: !(response instanceof " + TGS_SGWTFuncBase.class.getSimpleName() + "): " + response));
+            onFailure(TGS_UnSafe.toRuntimeException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", "ERROR: !(response instanceof " + TGS_SGWTFuncBase.class.getSimpleName() + "): " + response));
             return;
         }
-        executor.execute((T) response);
+        runnable.run((T) response);
         if (closure != null) {
-            closure.execute();
+            closure.run();
         }
     }
 }

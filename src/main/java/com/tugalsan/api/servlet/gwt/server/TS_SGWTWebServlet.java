@@ -35,7 +35,7 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
             return funcBase;
         }
 
-        si.value1.execute(request, funcBase, validationResult.value1);
+        si.value1.run(request, funcBase, validationResult.value1);
         d.ci("call", "executed", funcBase);
         return funcBase;
     }

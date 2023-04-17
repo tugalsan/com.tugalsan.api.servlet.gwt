@@ -1,11 +1,11 @@
 package com.tugalsan.api.servlet.gwt.server;
 
-import com.tugalsan.api.executable.client.*;
+import com.tugalsan.api.runnable.client.*;
 import javax.servlet.http.HttpServletRequest;
 import com.tugalsan.api.pack.client.*;
 import com.tugalsan.api.servlet.gwt.client.TGS_SGWTFuncBase;
 
-abstract public class TS_SGWTExecutor implements TGS_ExecutableType3<HttpServletRequest, TGS_SGWTFuncBase, Object> {
+abstract public class TS_SGWTExecutor implements TGS_RunnableType3<HttpServletRequest, TGS_SGWTFuncBase, Object> {
 
     abstract public String name();
 
@@ -16,6 +16,6 @@ abstract public class TS_SGWTExecutor implements TGS_ExecutableType3<HttpServlet
         if (!pack.value0) {
             return;
         }
-        executor.execute(rq, funcBase, pack.value1);
+        executor.run(rq, funcBase, pack.value1);
     }
 }

@@ -1,7 +1,7 @@
 module com.tugalsan.api.servlet.gwt {
     requires gwt.user;
     requires elemental2.promise;
-    requires com.tugalsan.api.executable;
+    requires com.tugalsan.api.runnable;
     requires com.tugalsan.api.unsafe;
     requires com.tugalsan.api.validator;
     requires com.tugalsan.api.thread;

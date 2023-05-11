@@ -19,7 +19,7 @@ abstract public class TGS_SGWTFuncBase implements IsSerializable {
 
     public TGS_SGWTFuncBase() {
         if (GWT.isClient()) {
-            input_url = TGC_UrlCurrentUtils.getUrl();
+            input_url = TGC_UrlCurrentUtils.getUrl().toString();
         }
     }
     private CharSequence input_url = null;

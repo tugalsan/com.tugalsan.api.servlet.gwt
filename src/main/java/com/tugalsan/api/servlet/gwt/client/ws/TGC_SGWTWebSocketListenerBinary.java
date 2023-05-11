@@ -19,7 +19,7 @@ package com.tugalsan.api.servlet.gwt.client.ws;
 /**
  * @author Stephen Samuel
  */
-public interface TGC_SGWTWebSocketBinaryWebsocketListener extends TGC_SGWTWebSocketListener {
+public interface TGC_SGWTWebSocketListenerBinary extends TGC_SGWTWebSocketListener {
 
     void onMessage(byte[] bytes);
 }

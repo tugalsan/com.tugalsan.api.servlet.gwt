@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * @author Stephen K Samuel 14 Sep 2012 08:58:55
  */
-public class TGC_SGWTWebSocketWebsocket {
+public class TGC_SGWTWebSocket {
 
     private static int counter = 1;
 
@@ -37,19 +37,19 @@ public class TGC_SGWTWebSocketWebsocket {
 
     private final Set<TGC_SGWTWebSocketListener> listeners = new HashSet();
 
-    private final String varName;
-    private final String url;
-
-    private TGC_SGWTWebSocketWebsocket(String url) {
+    public final String varName;
+    public final String url;
+    
+    private TGC_SGWTWebSocket(String url) {
         this.url = url;
         this.varName = "gwtws-" + counter++;
     }
 
-    public static TGC_SGWTWebSocketWebsocket ofUrlWs(TGS_Url wsUrl) {
-        return new TGC_SGWTWebSocketWebsocket(wsUrl.toString());
+    public static TGC_SGWTWebSocket ofUrlWs(TGS_Url wsUrl) {
+        return new TGC_SGWTWebSocket(wsUrl.toString());
     }
 
-    public static TGC_SGWTWebSocketWebsocket ofUrlApp(TGS_Url urlApp) {
+    public static TGC_SGWTWebSocket ofUrlApp(TGS_Url urlApp) {
         var parser = TGS_UrlParser.of(urlApp);
         var wsUrl = TGS_Url.of("wss://" + parser.host.domain + ":" + parser.host.port + "/" + parser.path.paths.get(0) + "/ws");
         return ofUrlWs(wsUrl);
@@ -59,7 +59,13 @@ public class TGC_SGWTWebSocketWebsocket {
         $wnd[s].close();
     }-*/;
 
-    private native void _open(TGC_SGWTWebSocketWebsocket ws, String s, String url);
+    private native void _open(TGC_SGWTWebSocket ws, String s, String url)/*-{
+        $wnd[s] = new WebSocket(url);
+        $wnd[s].onopen = function() { ws.@com.tugalsan.api.servlet.gwt.client.ws.TGC_SGWTWebSocket::onOpen()(); };
+        $wnd[s].onclose = function(evt) { ws.@com.tugalsan.api.servlet.gwt.client.ws.TGC_SGWTWebSocket::onClose(SLjava/lang/String;Z)(evt.code, evt.reason, evt.wasClean); };
+        $wnd[s].onerror = function() { ws.@com.tugalsan.api.servlet.gwt.client.ws.TGC_SGWTWebSocket::onError()(); };
+        $wnd[s].onmessage = function(msg) { ws.@com.tugalsan.api.servlet.gwt.client.ws.TGC_SGWTWebSocket::onMessage(Ljava/lang/String;)(msg.data); }
+    }-*/;
 
     private native void _send(String s, String msg) /*-{
         $wnd[s].send(msg);
@@ -101,8 +107,8 @@ public class TGC_SGWTWebSocketWebsocket {
     protected void onMessage(String msg) {
         listeners.forEach(l -> {
             l.onMessage(msg);
-            if (l instanceof TGC_SGWTWebSocketBinaryWebsocketListener) {
-                ((TGC_SGWTWebSocketBinaryWebsocketListener) l).onMessage(TGC_SGWTWebSocketBase64Utils.fromBase64(msg));
+            if (l instanceof TGC_SGWTWebSocketListenerBinary) {
+                ((TGC_SGWTWebSocketListenerBinary) l).onMessage(TGC_SGWTWebSocketBase64Utils.fromBase64(msg));
             }
         });
     }

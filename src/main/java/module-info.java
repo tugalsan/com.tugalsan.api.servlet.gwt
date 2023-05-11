@@ -1,9 +1,13 @@
 module com.tugalsan.api.servlet.gwt {
     requires gwt.user;
+    requires javax.websocket.api;
+    requires javax.servlet.api;
     requires elemental2.promise;
     requires com.tugalsan.api.runnable;
     requires com.tugalsan.api.unsafe;
+    requires com.tugalsan.api.time;
     requires com.tugalsan.api.validator;
+    requires com.tugalsan.api.callable;
     requires com.tugalsan.api.thread;
     requires com.tugalsan.api.stream;
     requires com.tugalsan.api.network;
@@ -12,5 +16,6 @@ module com.tugalsan.api.servlet.gwt {
     requires com.tugalsan.api.pack;
     requires com.tugalsan.api.url;
     exports com.tugalsan.api.servlet.gwt.client;
+    exports com.tugalsan.api.servlet.gwt.client.ws;
     exports com.tugalsan.api.servlet.gwt.server;
 }

@@ -13,7 +13,7 @@ module com.tugalsan.api.servlet.gwt {
     requires com.tugalsan.api.network;
     requires com.tugalsan.api.log;
     requires com.tugalsan.api.list;
-    requires com.tugalsan.api.pack;
+    requires com.tugalsan.api.tuple;
     requires com.tugalsan.api.url;
     exports com.tugalsan.api.servlet.gwt.client;
     exports com.tugalsan.api.servlet.gwt.client.ws;

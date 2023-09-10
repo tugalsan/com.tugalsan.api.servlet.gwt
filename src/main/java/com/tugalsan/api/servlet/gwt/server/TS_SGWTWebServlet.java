@@ -21,17 +21,17 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
         d.ci("call", "assured", funcBase);
         var si = TS_SGWTExecutorList.get(funcBase.getSuperClassName());
         if (si == null) {
-            var exceptionMessage = "HATA/ERROR: GET FUNC UNKNOWN: [" + funcBase.getSuperClassName() + "] of " + getServletData();
-            d.ce("call", exceptionMessage, funcBase);
-            funcBase.setExceptionMessage(exceptionMessage);
+            var errorMessage = "HATA/ERROR: GET FUNC UNKNOWN: [" + funcBase.getSuperClassName() + "] of " + getServletData();
+            d.ce("call", errorMessage, funcBase);
+            funcBase.setExceptionMessage(errorMessage);
             return funcBase;
         }
         var validationResult = si.value1.validate(request, funcBase);
         if (!validationResult.value0) {
             var clientIp = TS_NetworkIPUtils.getIPClient(request);
-            var exceptionMessage = "ERROR:" + si.value1.getClass().toString() + " cannot run (validate) for clientIp " + clientIp;
-            d.ce("call", exceptionMessage);
-            funcBase.setExceptionMessage(exceptionMessage);
+            var errorMessage = "ERROR:" + si.value1.getClass().toString() + " cannot run (validate) for clientIp " + clientIp;
+            d.ce("call", errorMessage);
+            funcBase.setExceptionMessage(errorMessage);
             return funcBase;
         }
 

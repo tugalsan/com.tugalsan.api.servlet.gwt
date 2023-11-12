@@ -2,7 +2,7 @@ module com.tugalsan.api.servlet.gwt {
     requires gwt.user;
     requires javax.websocket.api;
     requires javax.servlet.api;
-    requires elemental2.promise;
+//    requires elemental2.promise;
     requires com.tugalsan.api.runnable;
     requires com.tugalsan.api.unsafe;
     requires com.tugalsan.api.time;

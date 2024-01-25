@@ -1,6 +1,5 @@
 package com.tugalsan.api.servlet.gwt.server;
 
-import com.tugalsan.api.log.server.*;
 import com.tugalsan.api.unsafe.client.*;
 import java.io.*;
 import javax.websocket.*;
@@ -9,7 +8,7 @@ import javax.websocket.server.*;
 @ServerEndpoint("/ws")
 public class TS_SGWTWebSocket {
 
-    final private static TS_Log d = TS_Log.of(TS_SGWTWebSocket.class);
+//    final private static TS_Log d = TS_Log.of(TS_SGWTWebSocket.class);
 
     private String onBroadcast(Session session, String msg) {
         return TGS_UnSafe.call(() -> {

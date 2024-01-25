@@ -7,6 +7,8 @@ import com.tugalsan.api.unsafe.client.*;
 
 public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallback, IsSerializable {
 
+    final private static TGC_Log d = TGC_Log.of( TGC_SGWTResponse.class);
+
     private static String PREFIX_SERVER_DOWN_MESSAGE() {
         return "0  ";
     }
@@ -14,8 +16,6 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
     private static String PREFIX_SERVER_INTERNAL_MESSAGE() {
         return "500  ";
     }
-
-    final private static TGC_Log d = TGC_Log.of(TGC_SGWTResponse.class);
 
     public TGC_SGWTResponse() {
     }
@@ -31,39 +31,67 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
 
     @Override
     final public void onFailure(Throwable caught) {
-        if (caught == null) {
-            d.ce("onFailure", "caught == null");
-        } else if (caught.getMessage() == null) {
-            d.ce("onFailure", "caught.getMessage() == null");
-        } else if (caught.getMessage().startsWith(PREFIX_SERVER_DOWN_MESSAGE())) {
-            d.ce("onFailure", "HATA: Bağlantı koptu; güncelleniyor olabilir; network bağlantınızı kontrol edip, bekleyiniz...");
-        } else if (caught.getMessage().startsWith(PREFIX_SERVER_INTERNAL_MESSAGE())) {
-            d.ce("onFailure", "HATA: Server makinesinde hata oluştu! Ayrıntılar için server makinesinin hata kayıtlarına bakınız. (Hiç işlem yapamıyorsanız, kullanıcı girişinizi kontrol edebilirsiniz.)");
-        }
-        if (onFail != null) {
+        d.ci("onFailure", "#0", caught);
+        if (onFail == null) {
+            d.ci("onFailure", "onFail == null");
+            if (caught == null) {
+                d.ci("onFailure", "onFail == null", "#1");
+                d.ce("onFailure", "caught == null");
+            } else if (caught.getMessage() == null) {
+                d.ci("onFailure", "onFail == null", "#2");
+                d.ce("onFailure", "caught.getMessage() == null");
+            } else if (caught.getMessage().startsWith(PREFIX_SERVER_DOWN_MESSAGE())) {
+                d.ci("onFailure", "onFail == null", "#3");
+                d.ce("onFailure", "HATA: Bağlantı koptu; güncelleniyor olabilir; network bağlantınızı kontrol edip, bekleyiniz...");
+            } else if (caught.getMessage().startsWith(PREFIX_SERVER_INTERNAL_MESSAGE())) {
+                d.ci("onFailure", "onFail == null", "#4");
+                d.ce("onFailure", "HATA: Server makinesinde hata oluştu! Ayrıntılar için server makinesinin hata kayıtlarına bakınız. (Hiç işlem yapamıyorsanız, kullanıcı girişinizi kontrol edebilirsiniz.)");
+            } else {
+                d.ci("onFailure", "onFail == null", "#5");
+                d.ce("onFailure", "HATA: " + caught.getMessage());
+            }
+        } else {
+            d.ci("onFailure", "onFail != null", "#6");
             onFail.run(caught);
+            d.ci("onFailure", "onFail != null", "#7");
         }
+        d.ci("onFailure", "closure", "#8");
         if (closure != null) {
             closure.run();
         }
+        d.ci("onFailure", "closure", "#9");
     }
 
     @Override
     final public void onSuccess(Object response) {
+        d.ci("onSuccess", "#1", response);
         if (response == null) {
-            onFailure(TGS_UnSafe.toRuntimeException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", "ERROR: onSuccess -> response==null"));
-            return;
-        } else if (((T) response).getExceptionMessage() != null) {
-            onFailure(TGS_UnSafe.toRuntimeException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", ((T) response).getExceptionMessage()));
+            d.ci("onSuccess", "#2");
+            onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> response==null"));
             return;
         }
         if (!(response instanceof TGS_SGWTFuncBase)) {
-            onFailure(TGS_UnSafe.toRuntimeException(TGC_SGWTResponse.class.getSimpleName(), "onSuccess", "ERROR: !(response instanceof " + TGS_SGWTFuncBase.class.getSimpleName() + "): " + response));
+            d.ci("onSuccess", "#3");
+            onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: !(response instanceof " + TGS_SGWTFuncBase.class.getSimpleName() + "): " + response));
             return;
         }
+        d.ci("onSuccess", "#4");
+        var funcBase = (T) response;
+        d.ci("onSuccess", "#5");
+        if (funcBase.getExceptionMessage() != null) {
+            d.ci("onSuccess", "#6");
+            var errMsg = funcBase.getExceptionMessage();
+            d.ci("onSuccess", "#7");
+            onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> getMessage: " + errMsg));
+            d.ci("onSuccess", "#8");
+            return;
+        }
+        d.ci("onSuccess", "#10");
         runnable.run((T) response);
+        d.ci("onSuccess", "#11");
         if (closure != null) {
             closure.run();
         }
+        d.ci("onSuccess", "#12");
     }
 }

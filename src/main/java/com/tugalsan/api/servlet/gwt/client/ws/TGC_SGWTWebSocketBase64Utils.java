@@ -46,7 +46,7 @@ public class TGC_SGWTWebSocketBase64Utils {
      */
     static {
         // Invert the mapping (i -> base64Chars[i])
-        for (int i = 0; i < base64Chars.length; i++) {
+        for (var i = 0; i < base64Chars.length; i++) {
             base64Values[base64Chars[i]] = (byte) i;
         }
     }
@@ -63,14 +63,14 @@ public class TGC_SGWTWebSocketBase64Utils {
             return null;
         }
 
-        int len = data.length();
+        var len = data.length();
         assert (len % 4) == 0;
 
         if (len == 0) {
             return new byte[0];
         }
 
-        char[] chars = new char[len];
+        var chars = new char[len];
         data.getChars(0, len, chars, 0);
 
         var olen = 3 * (len / 4);
@@ -90,7 +90,7 @@ public class TGC_SGWTWebSocketBase64Utils {
             int c1 = base64Values[chars[iidx++] & 0xff];
             int c2 = base64Values[chars[iidx++] & 0xff];
             int c3 = base64Values[chars[iidx++] & 0xff];
-            int c24 = (c0 << 18) | (c1 << 12) | (c2 << 6) | c3;
+            var c24 = (c0 << 18) | (c1 << 12) | (c2 << 6) | c3;
 
             bytes[oidx++] = (byte) (c24 >> 16);
             if (oidx == olen) {
@@ -112,7 +112,7 @@ public class TGC_SGWTWebSocketBase64Utils {
     public static long longFromBase64(String value) {
         var pos = 0;
         long longVal = base64Values[value.charAt(pos++)];
-        int len = value.length();
+        var len = value.length();
         while (pos < len) {
             longVal <<= 6;
             longVal |= base64Values[value.charAt(pos++)];
@@ -136,7 +136,7 @@ public class TGC_SGWTWebSocketBase64Utils {
             return null;
         }
 
-        int len = data.length;
+        var len = data.length;
         if (len == 0) {
             return "";
         }

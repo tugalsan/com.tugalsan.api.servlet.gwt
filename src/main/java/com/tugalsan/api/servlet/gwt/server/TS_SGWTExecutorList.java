@@ -9,7 +9,7 @@ public class TS_SGWTExecutorList {
 
     final private static TS_Log d = TS_Log.of(TS_SGWTExecutorList.class);
 
-    public static TS_ThreadSyncLst<TGS_Tuple2<String, TS_SGWTExecutor>> SYNC = new TS_ThreadSyncLst();
+    public static TS_ThreadSyncLst<TGS_Tuple2<String, TS_SGWTExecutor>> SYNC = TS_ThreadSyncLst.of();
 
     public static TS_SGWTExecutor add(TS_SGWTExecutor exe) {
         SYNC.add(new TGS_Tuple2(exe.name(), exe));

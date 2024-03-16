@@ -32,6 +32,7 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
             if (si == null) {
                 return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " cannot find for clientIp " + clientIp + ":\n" + getServletData());
             }
+            
             var validationResult = si.value1.validate(request, funcBase);
             if (!validationResult.value0) {
                 return handleError(funcBase, "ERROR:" + si.value1.getClass().toString() + " cannot run (validate) for clientIp " + clientIp);

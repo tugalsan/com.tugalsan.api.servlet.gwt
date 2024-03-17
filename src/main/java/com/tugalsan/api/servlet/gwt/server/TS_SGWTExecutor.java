@@ -9,6 +9,10 @@ abstract public class TS_SGWTExecutor implements TGS_RunnableType3<HttpServletRe
 
     abstract public String name();
 
+    public int timeout_seconds() {
+        return 60;
+    }
+
     abstract public TGS_Tuple2<Boolean, Object> validate(HttpServletRequest request, TGS_SGWTFuncBase funcBase);
 
     public static void ifValidExecute(TS_SGWTExecutor executor, HttpServletRequest rq, TGS_SGWTFuncBase funcBase) {

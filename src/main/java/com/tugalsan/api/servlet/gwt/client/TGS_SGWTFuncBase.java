@@ -10,10 +10,6 @@ abstract public class TGS_SGWTFuncBase implements IsSerializable {
         return exceptionMessage;
     }
 
-    public int timeout_seconds() {
-        return 60;
-    }
-
     public void setExceptionMessage(CharSequence exceptionMessage) {
         this.exceptionMessage = exceptionMessage.toString();
     }

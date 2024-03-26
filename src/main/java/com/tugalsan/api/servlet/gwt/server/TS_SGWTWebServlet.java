@@ -38,12 +38,17 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
                 return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " cannot find for clientIp " + clientIp + ":\n" + getServletData());
             }
             TGS_CallableType1<Boolean, TS_ThreadSyncTrigger> callable = kt -> {
-                var validationResult = si.value1.validate(request, funcBase);
-                if (!validationResult.value0) {
+                return TGS_UnSafe.call(() -> {
+                    var validationResult = si.value1.validate(request, funcBase);
+                    if (!validationResult.value0) {
+                        return false;
+                    }
+                    si.value1.run(request, funcBase, validationResult.value1);
+                    return true;
+                }, e -> {
+                    d.ct("call", e);
                     return false;
-                }
-                si.value1.run(request, funcBase, validationResult.value1);
-                return true;
+                });
             };
             var await = TS_ThreadAsyncAwait.callSingle(killTrigger, Duration.ofSeconds(si.value1.timeout_seconds()), callable);
             if (await.timeout()) {

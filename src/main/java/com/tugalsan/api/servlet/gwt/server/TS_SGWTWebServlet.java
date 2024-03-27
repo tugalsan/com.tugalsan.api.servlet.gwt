@@ -18,6 +18,7 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
 
     final private static TS_Log d = TS_Log.of(TS_SGWTWebServlet.class);
     public static volatile TS_ThreadSyncTrigger killTrigger = null;
+    public static volatile TS_SGWTConfig config = TS_SGWTConfig.of();
 
 //    private static final long serialVersionUID () 20201015L;
     @Override
@@ -50,18 +51,25 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
                     return false;
                 });
             };
-            var await = TS_ThreadAsyncAwait.callSingle(killTrigger, Duration.ofSeconds(si.value1.timeout_seconds()), callable);
-            if (await.timeout()) {
-                handleError(funcBase, "ERROR:" + si.value1.getClass().toString() + " cannot run (timeout) for clientIp " + clientIp);
-                return funcBase;
-            }
-            if (await.resultIfSuccessful.isEmpty()) {
-                handleError(funcBase, "ERROR:" + si.value1.getClass().toString() + " cannot run (unknown) for clientIp " + clientIp);
-                return funcBase;
-            }
-            if (!await.resultIfSuccessful.get()) {
-                handleError(funcBase, "ERROR:" + si.value1.getClass().toString() + " cannot run (validate) for clientIp " + clientIp);
-                return funcBase;
+            if (config.enableTimeout) {
+                var await = TS_ThreadAsyncAwait.callSingle(killTrigger, Duration.ofSeconds(si.value1.timeout_seconds()), callable);
+                if (await.timeout()) {
+                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " cannot run (timeout) for clientIp " + clientIp);
+                    return funcBase;
+                }
+                if (await.resultIfSuccessful.isEmpty()) {
+                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " cannot run (unknown) for clientIp " + clientIp);
+                    return funcBase;
+                }
+                if (!await.resultIfSuccessful.get()) {
+                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " cannot run (validate) for clientIp " + clientIp);
+                    return funcBase;
+                }
+            } else {
+                if (!callable.call(killTrigger)) {
+                    handleError(funcBase, "ERROR(SYNC):" + si.value1.getClass().toString() + " cannot run (validate) for clientIp " + clientIp);
+                    return funcBase;
+                }
             }
             d.ci("call", "executed", funcBase.getSuperClassName());
             return funcBase;

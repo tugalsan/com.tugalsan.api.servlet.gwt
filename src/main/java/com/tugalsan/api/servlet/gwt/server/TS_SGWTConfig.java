@@ -16,6 +16,9 @@ public class TS_SGWTConfig implements Serializable {
 
     final private static boolean DEFAULT_ENABLE_TIMEOUT = false;
 
+    private TS_SGWTConfig() {//DTO
+    }
+
     private TS_SGWTConfig(boolean enableTimeout) {
         this.enableTimeout = enableTimeout;
     }

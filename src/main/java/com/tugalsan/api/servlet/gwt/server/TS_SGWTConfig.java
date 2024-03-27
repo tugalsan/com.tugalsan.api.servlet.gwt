@@ -65,9 +65,9 @@ public class TS_SGWTConfig implements Serializable {
         enableTimeout = (Boolean) prop.getOrDefault("enableTimeout", enableTimeout);
     }
 
-    public static TS_SGWTConfig of(Path dir) {
+    public static TS_SGWTConfig of(Path dir, String appName) {
         TS_DirectoryUtils.assureExists(dir);
-        var filePath = dir.resolve(TS_SGWTConfig.class.getSimpleName() + ".json");
+        var filePath = dir.resolve(TS_SGWTConfig.class.getSimpleName() + "." + appName + ".json");
         d.cr("of", filePath);
 
         if (!TS_FileUtils.isExistFile(filePath)) {

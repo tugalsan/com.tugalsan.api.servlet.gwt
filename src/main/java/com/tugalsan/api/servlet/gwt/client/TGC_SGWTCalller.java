@@ -55,7 +55,7 @@ public class TGC_SGWTCalller {
                 }
             });
             return (T) future.get();
-        } catch (Exception e) {
+        } catch (?Exception e) {
             TGS_UnSafe.throwIfInterruptedException(e);
             d.ct("syncCompletableFuture", e);
             return null;

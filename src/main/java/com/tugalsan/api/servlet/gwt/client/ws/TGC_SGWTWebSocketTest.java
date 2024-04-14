@@ -3,19 +3,24 @@ package com.tugalsan.api.servlet.gwt.client.ws;
 import com.tugalsan.api.log.client.TGC_Log;
 import com.tugalsan.api.thread.client.TGC_ThreadUtils;
 import com.tugalsan.api.time.client.TGS_Time;
+import com.tugalsan.api.union.client.TGS_UnionExcuseVoid;
 import com.tugalsan.api.url.client.TGS_Url;
 
 //https://stackoverflow.com/questions/74175629/broadcast-message-in-websocket-java
 public class TGC_SGWTWebSocketTest {
 
-    final private static TGC_Log d = TGC_Log.of(true,TGC_SGWTWebSocketTest.class);
+    final private static TGC_Log d = TGC_Log.of(true, TGC_SGWTWebSocketTest.class);
 
-    public static boolean testClient(TGS_Url urlApp) {
+    public static TGS_UnionExcuseVoid testClient(TGS_Url urlApp) {
         if (!TGC_SGWTWebSocket.isSupported()) {
-            return false;
+            return TGS_UnionExcuseVoid.ofExcuse(d.className, "testClient", "!TGC_SGWTWebSocket.isSupported()");
         }
         d.ci("testClient", "urlApp", urlApp);
-        var ws = TGC_SGWTWebSocket.ofUrlApp(urlApp);
+        var u_ws = TGC_SGWTWebSocket.ofUrlApp(urlApp);
+        if (u_ws.isExcuse()) {
+            return u_ws.toExcuseVoid();
+        }
+        var ws = u_ws.value();
         ws.addListener(new TGC_SGWTWebSocketListener() {
 
             @Override
@@ -36,7 +41,7 @@ public class TGC_SGWTWebSocketTest {
         d.ci("testClient", "state", "CONNECTING = 0, OPEN = 1, CLOSING = 2, CLOSED = 3", ws.url);
         ws.open();
         if (true) {
-            return true;
+            return TGS_UnionExcuseVoid.ofVoid();
         }
         d.ci("testClient", "state", "after_open", ws.afterOpenState());
         TGC_ThreadUtils.create_afterGUIUpdate(t -> {
@@ -56,6 +61,6 @@ public class TGC_SGWTWebSocketTest {
                 d.ci("testClient", "state", "after_close", ws.afterOpenState());
             }, 10);
         }).run_afterSeconds(1);
-        return true;
+        return TGS_UnionExcuseVoid.ofVoid();
     }
 }

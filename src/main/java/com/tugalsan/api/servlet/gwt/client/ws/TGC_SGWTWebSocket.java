@@ -15,6 +15,7 @@
  */
 package com.tugalsan.api.servlet.gwt.client.ws;
 
+import com.tugalsan.api.union.client.TGS_UnionExcuse;
 import com.tugalsan.api.url.client.TGS_Url;
 import com.tugalsan.api.url.client.parser.TGS_UrlParser;
 import java.util.HashSet;
@@ -39,7 +40,7 @@ public class TGC_SGWTWebSocket {
 
     public final String varName;
     public final String url;
-    
+
     private TGC_SGWTWebSocket(String url) {
         this.url = url;
         this.varName = "gwtws-" + counter++;
@@ -49,10 +50,14 @@ public class TGC_SGWTWebSocket {
         return new TGC_SGWTWebSocket(wsUrl.toString());
     }
 
-    public static TGC_SGWTWebSocket ofUrlApp(TGS_Url urlApp) {
-        var parser = TGS_UrlParser.of(urlApp);
+    public static TGS_UnionExcuse<TGC_SGWTWebSocket> ofUrlApp(TGS_Url urlApp) {
+        var u_parser = TGS_UrlParser.of(urlApp);
+        if (u_parser.isExcuse()) {
+            return u_parser.toExcuse();
+        }
+        var parser = u_parser.value();
         var wsUrl = TGS_Url.of("wss://" + parser.host.domain + ":" + parser.host.port + "/" + parser.path.paths.get(0) + "/ws");
-        return ofUrlWs(wsUrl);
+        return TGS_UnionExcuse.of(ofUrlWs(wsUrl));
     }
 
     private native void _close(String s) /*-{

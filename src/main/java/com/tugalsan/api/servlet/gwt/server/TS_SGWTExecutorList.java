@@ -3,16 +3,16 @@ package com.tugalsan.api.servlet.gwt.server;
 import java.util.*;
 import com.tugalsan.api.log.server.*;
 import com.tugalsan.api.thread.server.sync.TS_ThreadSyncLst;
-import com.tugalsan.api.tuple.client.*;
 
 public class TS_SGWTExecutorList {
 
     final private static TS_Log d = TS_Log.of(TS_SGWTExecutorList.class);
 
-    public static TS_ThreadSyncLst<TGS_Tuple2<String, TS_SGWTExecutor>> SYNC = TS_ThreadSyncLst.of();
+    
+    public static TS_ThreadSyncLst<TS_SGWTExecutorItem> SYNC = TS_ThreadSyncLst.of();
 
     public static TS_SGWTExecutor add(TS_SGWTExecutor exe) {
-        SYNC.add(new TGS_Tuple2(exe.name(), exe));
+        SYNC.add(new TS_SGWTExecutorItem(exe.name(), exe));
         d.cr("add", exe.name());
         return exe;
     }
@@ -27,7 +27,7 @@ public class TS_SGWTExecutorList {
         return exe;
     }
 
-    public static TGS_Tuple2<String, TS_SGWTExecutor> get(String name) {
-        return SYNC.findFirst(item -> Objects.equals(item.value0, name));
+    public static TS_SGWTExecutorItem get(String name) {
+        return SYNC.findFirst(item -> Objects.equals(item.name(), name));
     }
 }

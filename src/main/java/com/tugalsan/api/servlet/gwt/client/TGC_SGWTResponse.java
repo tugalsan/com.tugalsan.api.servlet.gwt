@@ -3,11 +3,11 @@ package com.tugalsan.api.servlet.gwt.client;
 import com.google.gwt.user.client.rpc.*;
 import com.tugalsan.api.log.client.*;
 import com.tugalsan.api.runnable.client.*;
-import com.tugalsan.api.unsafe.client.*;
+import com.tugalsan.api.union.client.TGS_UnionUtils;
 
 public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallback, IsSerializable {
 
-    final private static TGC_Log d = TGC_Log.of( TGC_SGWTResponse.class);
+    final private static TGC_Log d = TGC_Log.of(TGC_SGWTResponse.class);
 
     private static String PREFIX_SERVER_DOWN_MESSAGE() {
         return "0  ";
@@ -67,12 +67,12 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
         d.ci("onSuccess", "#1", response);
         if (response == null) {
             d.ci("onSuccess", "#2");
-            onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> response==null"));
+            onFailure(new Throwable(d.className + ".onSuccess.ERROR: onSuccess -> response==null"));
             return;
         }
         if (!(response instanceof TGS_SGWTFuncBase)) {
             d.ci("onSuccess", "#3");
-            onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: !(response instanceof " + TGS_SGWTFuncBase.class.getSimpleName() + "): " + response));
+            onFailure(new Throwable(d.className + "onSuccess.ERROR: !(response instanceof " + TGS_SGWTFuncBase.class.getSimpleName() + "): " + response));
             return;
         }
         d.ci("onSuccess", "#4");
@@ -82,7 +82,7 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
             d.ci("onSuccess", "#6");
             var errMsg = funcBase.getExceptionMessage();
             d.ci("onSuccess", "#7");
-            onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> getMessage: " + errMsg));
+            onFailure(new Throwable(d.className + "onSuccess.ERROR: onSuccess -> getMessage: " + errMsg));
             d.ci("onSuccess", "#8");
             return;
         }

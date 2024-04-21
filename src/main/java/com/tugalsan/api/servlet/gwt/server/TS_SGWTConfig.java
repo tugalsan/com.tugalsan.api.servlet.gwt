@@ -13,8 +13,7 @@ import java.util.Properties;
 public class TS_SGWTConfig implements Serializable {
 
     final private static TS_Log d = TS_Log.of(TS_SGWTConfig.class);
-
-    final private static boolean DEFAULT_ENABLE_TIMEOUT = false;
+    final private static boolean DEFAULT_ENABLE_TIMEOUT = true;
 
     private TS_SGWTConfig() {//DTO
     }

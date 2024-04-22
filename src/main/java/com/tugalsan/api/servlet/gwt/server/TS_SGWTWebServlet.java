@@ -16,7 +16,7 @@ import java.time.Duration;
 @WebServlet("/" + TGC_SGWTService.LOC_PARENT + "/" + TGC_SGWTService.LOC_NAME)//AS IN "/app/g"
 public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTServiceInterface {
 
-    final private static TS_Log d = TS_Log.of(true,TS_SGWTWebServlet.class);
+    final private static TS_Log d = TS_Log.of(false, TS_SGWTWebServlet.class);
     public static volatile TS_ThreadSyncTrigger killTrigger = null;
     public static volatile TS_SGWTConfig config = TS_SGWTConfig.of();
 

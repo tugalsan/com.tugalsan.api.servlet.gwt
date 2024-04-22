@@ -16,7 +16,7 @@ import java.time.Duration;
 @WebServlet("/" + TGC_SGWTService.LOC_PARENT + "/" + TGC_SGWTService.LOC_NAME)//AS IN "/app/g"
 public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTServiceInterface {
 
-    final private static TS_Log d = TS_Log.of(TS_SGWTWebServlet.class);
+    final private static TS_Log d = TS_Log.of(true,TS_SGWTWebServlet.class);
     public static volatile TS_ThreadSyncTrigger killTrigger = null;
     public static volatile TS_SGWTConfig config = TS_SGWTConfig.of();
 
@@ -71,7 +71,7 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
                     return funcBase;
                 }
             }
-            d.ci("call", "executed", funcBase.getSuperClassName());
+            d.ci("call", "executed", "config.enableTimeout", config.enableTimeout, funcBase.getSuperClassName(), "ex:" + funcBase.getExceptionMessage());
             return funcBase;
         }, e -> handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " -> RUNTIME_ERROR: " + e.getMessage()));
     }

@@ -1,5 +1,6 @@
 package com.tugalsan.api.servlet.gwt.server;
 
+import com.tugalsan.api.union.client.TGS_UnionExcuse;
 import com.tugalsan.api.unsafe.client.*;
 import java.io.*;
 import javax.websocket.*;
@@ -9,16 +10,14 @@ import javax.websocket.server.*;
 public class TS_SGWTWebSocket {
 
 //    final private static TS_Log d = TS_Log.of(TS_SGWTWebSocket.class);
-
-    private String onBroadcast(Session session, String msg) {
+    private TGS_UnionExcuse<String> onBroadcast(Session session, String msg) {
         return TGS_UnSafe.call(() -> {
             for (var s : session.getOpenSessions()) {
                 s.getBasicRemote().sendText("onBroadcast: " + msg);
             }
-            return msg;
+            return TGS_UnionExcuse.of(msg);
         }, e -> {
-            e.printStackTrace();
-            return null;
+            return TGS_UnionExcuse.ofExcuse(e);
         });
     }
 

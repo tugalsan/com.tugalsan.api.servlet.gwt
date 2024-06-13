@@ -7,7 +7,7 @@ import com.tugalsan.api.unsafe.client.*;
 
 public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallback, IsSerializable {
 
-    final private static TGC_Log d = TGC_Log.of( TGC_SGWTResponse.class);
+    final private static TGC_Log d = TGC_Log.of(TGC_SGWTResponse.class);
 
     private static String PREFIX_SERVER_DOWN_MESSAGE() {
         return "0  ";
@@ -81,6 +81,9 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
         if (funcBase.getExceptionMessage() != null) {
             d.ci("onSuccess", "#6");
             var errMsg = funcBase.getExceptionMessage();
+            if (errMsg.contains("cannot run (validate)")) {
+                errMsg = errMsg + " [UYARI: Yetkilendirilmiş gün sayısından daha önceki bir kayıtta değişiklik yapılmaya çalışılmış olabilir.]";
+            }
             d.ci("onSuccess", "#7");
             onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> getMessage: " + errMsg));
             d.ci("onSuccess", "#8");

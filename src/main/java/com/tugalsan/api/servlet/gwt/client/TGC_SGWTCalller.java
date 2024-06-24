@@ -1,25 +1,26 @@
 package com.tugalsan.api.servlet.gwt.client;
 
-import com.tugalsan.api.runnable.client.*;
+import com.tugalsan.api.callable.client.TGS_CallableType0Void;
+import com.tugalsan.api.callable.client.TGS_CallableType1Void;
 import com.tugalsan.api.log.client.*;
 
 public class TGC_SGWTCalller {
 
     final private static TGC_Log d = TGC_Log.of(TGC_SGWTCalller.class);
 
-    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_RunnableType1<T> runnable) {
+    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_CallableType1Void<T> runnable) {
         async(func, runnable, null, null);
     }
 
-    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_RunnableType1<T> runnable, TGS_Runnable closure) {
+    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_CallableType1Void<T> runnable, TGS_CallableType0Void closure) {
         async(func, runnable, null, closure);
     }
 
-    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_RunnableType1<T> runnable, TGS_RunnableType1<Throwable> onFail) {
+    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_CallableType1Void<T> runnable, TGS_CallableType1Void<Throwable> onFail) {
         async(func, runnable, onFail, null);
     }
 
-    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_RunnableType1<T> runnable, TGS_RunnableType1<Throwable> onFail, TGS_Runnable closure) {
+    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_CallableType1Void<T> runnable, TGS_CallableType1Void<Throwable> onFail, TGS_CallableType0Void closure) {
         d.ci("async", func.getSuperClassName(), func);
         TGC_SGWTService.getServiceInstance().call(func, new TGC_SGWTResponse(runnable, onFail, closure));
     }

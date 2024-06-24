@@ -3,7 +3,7 @@ module com.tugalsan.api.servlet.gwt {
     requires javax.websocket.api;
     requires javax.servlet.api;
 //    requires elemental2.promise;
-    requires com.tugalsan.api.runnable;
+    
     requires com.tugalsan.api.file;
     requires com.tugalsan.api.file.json;
     requires com.tugalsan.api.file.txt;

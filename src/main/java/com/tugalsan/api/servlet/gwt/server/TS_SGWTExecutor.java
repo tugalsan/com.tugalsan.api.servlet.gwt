@@ -1,12 +1,12 @@
 package com.tugalsan.api.servlet.gwt.server;
 
 
-import com.tugalsan.api.callable.client.TGS_CallableType3Void;
+import com.tugalsan.api.callable.client.TGS_CallableType3_Run;
 import javax.servlet.http.HttpServletRequest;
 import com.tugalsan.api.tuple.client.*;
 import com.tugalsan.api.servlet.gwt.client.TGS_SGWTFuncBase;
 
-abstract public class TS_SGWTExecutor implements TGS_CallableType3Void<HttpServletRequest, TGS_SGWTFuncBase, Object> {
+abstract public class TS_SGWTExecutor implements TGS_CallableType3_Run<HttpServletRequest, TGS_SGWTFuncBase, Object> {
 
     abstract public String name();
 

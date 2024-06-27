@@ -1,8 +1,8 @@
 package com.tugalsan.api.servlet.gwt.client;
 
 import com.google.gwt.user.client.rpc.*;
-import com.tugalsan.api.callable.client.TGS_CallableType0_Run;
-import com.tugalsan.api.callable.client.TGS_CallableType1_Run;
+import com.tugalsan.api.function.client.TGS_Func;
+import com.tugalsan.api.function.client.TGS_Func_In1;
 import com.tugalsan.api.log.client.*;
 
 import com.tugalsan.api.unsafe.client.*;
@@ -22,14 +22,14 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
     public TGC_SGWTResponse() {
     }
 
-    public TGC_SGWTResponse(TGS_CallableType1_Run<T> runnable, TGS_CallableType1_Run<Throwable> onFail, TGS_CallableType0_Run closure) {
+    public TGC_SGWTResponse(TGS_Func_In1<T> runnable, TGS_Func_In1<Throwable> onFail, TGS_Func closure) {
         this.runnable = runnable;
         this.onFail = onFail;
         this.closure = closure;
     }
-    private TGS_CallableType1_Run<T> runnable;
-    private TGS_CallableType1_Run<Throwable> onFail;
-    private TGS_CallableType0_Run closure;
+    private TGS_Func_In1<T> runnable;
+    private TGS_Func_In1<Throwable> onFail;
+    private TGS_Func closure;
 
     @Override
     final public void onFailure(Throwable caught) {

@@ -11,7 +11,7 @@ module com.tugalsan.api.servlet.gwt {
     requires com.tugalsan.api.union;
     requires com.tugalsan.api.time;
     
-    requires com.tugalsan.api.callable;
+    requires com.tugalsan.api.function;
     requires com.tugalsan.api.thread;
     requires com.tugalsan.api.stream;
     requires com.tugalsan.api.network;

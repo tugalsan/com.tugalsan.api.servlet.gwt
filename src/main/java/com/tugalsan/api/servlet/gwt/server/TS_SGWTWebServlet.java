@@ -3,7 +3,7 @@ package com.tugalsan.api.servlet.gwt.server;
 import java.util.*;
 import javax.servlet.annotation.*;
 import com.google.gwt.user.server.rpc.*;
-import com.tugalsan.api.callable.client.TGS_CallableType1;
+import com.tugalsan.api.function.client.TGS_Func_OutTyped_In1;
 import com.tugalsan.api.servlet.gwt.client.*;
 import com.tugalsan.api.log.server.*;
 import com.tugalsan.api.network.server.*;
@@ -38,7 +38,7 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
             if (si == null) {
                 return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " cannot find for clientIp " + clientIp + ":\n" + getServletData());
             }
-            TGS_CallableType1<Boolean, TS_ThreadSyncTrigger> callable = kt -> {
+            TGS_Func_OutTyped_In1<Boolean, TS_ThreadSyncTrigger> callable = kt -> {
                 return TGS_UnSafe.call(() -> {
                     var validationResult = si.value1.validate(request, funcBase);
                     if (!validationResult.value0) {

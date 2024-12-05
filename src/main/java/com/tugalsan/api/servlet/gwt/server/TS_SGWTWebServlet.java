@@ -84,7 +84,7 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
 
     private static List<String> getServletData() {
         return TGS_StreamUtils.toLst(
-                TS_SGWTExecutorList.SYNC.toList().stream()
+                TS_SGWTExecutorList.SYNC.stream()
                         .map(item -> item.value0 + ":" + item.value1.getClass().getSimpleName())
         );
     }

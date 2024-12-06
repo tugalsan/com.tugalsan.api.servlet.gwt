@@ -3,6 +3,7 @@ package com.tugalsan.api.servlet.gwt.client;
 import com.tugalsan.api.function.client.TGS_Func;
 import com.tugalsan.api.function.client.TGS_Func_In1;
 import com.tugalsan.api.log.client.*;
+import com.tugalsan.api.time.client.TGS_Time;
 
 public class TGC_SGWTCalller {
 
@@ -21,9 +22,11 @@ public class TGC_SGWTCalller {
     }
 
     public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_Func_In1<T> runnable, TGS_Func_In1<Throwable> onFail, TGS_Func closure) {
+        lastTime.setToTodayAndNow();
         d.ci("async", func.getSuperClassName(), func);
         TGC_SGWTService.getServiceInstance().call(func, new TGC_SGWTResponse(runnable, onFail, closure));
     }
+    public static final TGS_Time lastTime = TGS_Time.of();
 
     /*
     @Deprecated //NOT SUPPORTED YET

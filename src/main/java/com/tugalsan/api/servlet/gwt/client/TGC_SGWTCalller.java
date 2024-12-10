@@ -13,6 +13,10 @@ public class TGC_SGWTCalller {
         async(func, runnable, null, null);
     }
 
+    public static <T extends TGS_SGWTFuncBase> void async(boolean periodic, T func, TGS_Func_In1<T> runnable) {
+        async(periodic, func, runnable, null, null);
+    }
+
     public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_Func_In1<T> runnable, TGS_Func closure) {
         async(func, runnable, null, closure);
     }
@@ -22,7 +26,13 @@ public class TGC_SGWTCalller {
     }
 
     public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_Func_In1<T> runnable, TGS_Func_In1<Throwable> onFail, TGS_Func closure) {
-        lastTime.setToTodayAndNow();
+        async(false, func, runnable, onFail, closure);
+    }
+
+    public static <T extends TGS_SGWTFuncBase> void async(boolean periodic, T func, TGS_Func_In1<T> runnable, TGS_Func_In1<Throwable> onFail, TGS_Func closure) {
+        if (!periodic) {
+            lastTime.setToTodayAndNow();
+        }
         d.ci("async", func.getSuperClassName(), func);
         TGC_SGWTService.getServiceInstance().call(func, new TGC_SGWTResponse(runnable, onFail, closure));
     }

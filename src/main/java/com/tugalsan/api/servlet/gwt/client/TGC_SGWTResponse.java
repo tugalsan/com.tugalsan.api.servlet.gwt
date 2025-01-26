@@ -92,7 +92,7 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
                 d.ce("onFailure", "HATA: Server makinesinde hata oluştu! Ayrıntılar için server makinesinin hata kayıtlarına bakınız. (Hiç işlem yapamıyorsanız, kullanıcı girişinizi kontrol edebilirsiniz.)");
             } else {
                 d.ci("onFailure", "onFail == null", "#5");
-                d.ce("onFailure", "HATA: " + caught.getMessage());
+                d.ce("onFailure", "HATA: " + caught.getMessage().replace("class com.tugalsan.api.unsafe.client.TGS_UnSafe.toRuntimeException->CLASS[TGC_SGWTResponse]", "TGC_SGWTResponse"));
             }
         } else {
             d.ci("onFailure", "onFail != null", "#6");

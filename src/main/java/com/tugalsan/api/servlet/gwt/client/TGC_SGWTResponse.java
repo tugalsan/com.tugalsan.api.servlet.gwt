@@ -3,6 +3,7 @@ package com.tugalsan.api.servlet.gwt.client;
 import com.google.gwt.user.client.rpc.*;
 import com.tugalsan.api.function.client.TGS_Func;
 import com.tugalsan.api.function.client.TGS_Func_In1;
+import com.tugalsan.api.function.client.TGS_Func_OutTyped;
 import com.tugalsan.api.function.client.TGS_Func_OutTyped_In1;
 import com.tugalsan.api.log.client.*;
 
@@ -18,6 +19,9 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
     final public static String VALIDATE_RESULT_EMPTY = "VALIDATE_RESULT_EMPTY";
     final public static String VALIDATE_RESULT_FALSE = "VALIDATE_RESULT_FALSE";
     final public static String VALIDATE_RESULT_KILLED = "VALIDATE_RESULT_KILLED";
+    public static TGS_Func_OutTyped<Boolean> isUserOut = () -> {
+        return null;//TGC_LibLoginCardUtils.async(_loginCard -> {});
+    };
     public static TGS_Func_OutTyped_In1<String, String> onSuccess_and_exceptionMessageNotNull = errMsg -> {
         if (errMsg.contains(CANNOT_FETCH_REQUEST)) {
             return "UYARI: " + CANNOT_FETCH_REQUEST + " Hizmet sağlayıcı aktif değil; beklemek işe yaramaz ise, IT departmanından programın tekrar başlatılması için isteyiniz. Detaylar: " + errMsg;
@@ -35,7 +39,16 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
             return "UYARI: " + VALIDATE_RESULT_EMPTY + " Doğrulama sonucu boş döndü; kod hatası veya güvenlik ihlali söz konusu olabilir; Ne yaparken bu hatayı aldığınız konusunda IT departmanını bilgilendiriniz. Detaylar: " + errMsg;
         }
         if (errMsg.contains(VALIDATE_RESULT_FALSE)) {
-            return "UYARI: " + VALIDATE_RESULT_FALSE + " Kullancı çıkmış veya yetkilendirilmiş gün sayısından daha önceki bir kayıtta değişiklik yapılmaya çalışılmış] olabilir. Kullanıcı çıkmış ise, tüm sekmeleri kapatıp tekrar girin. Yetkilendirmeler için Üst yönetime başvurunuz Detaylar: " + errMsg;
+            var userOut = isUserOut.call();
+            if (userOut == null) {
+                return "UYARI: " + VALIDATE_RESULT_FALSE + " Kullancı çıkmış veya yetkilendirilmiş gün sayısından daha önceki bir kayıtta değişiklik yapılmaya çalışılmış] olabilir. Kullanıcı çıkmış ise, tüm sekmeleri kapatıp tekrar girin. Yetkilendirmeler için Üst yönetime başvurunuz. Detaylar: " + errMsg;
+            } else {
+                if (userOut) {
+                    return "UYARI: " + VALIDATE_RESULT_FALSE + " Kullancı çıkmış; tüm sekmeleri kapatıp tekrar girin. Detaylar: " + errMsg;
+                } else {
+                    return "UYARI: " + VALIDATE_RESULT_FALSE + " Yetkilendirilmiş gün sayısından daha önceki bir kayıtta değişiklik yapılmaya çalışılmış] olabilir; Yetkilendirmeler için Üst yönetime başvurunuz. Detaylar: " + errMsg;
+                }
+            }
         }
         return errMsg;
     };

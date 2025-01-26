@@ -3,6 +3,7 @@ package com.tugalsan.api.servlet.gwt.client;
 import com.google.gwt.user.client.rpc.*;
 import com.tugalsan.api.function.client.TGS_Func;
 import com.tugalsan.api.function.client.TGS_Func_In1;
+import com.tugalsan.api.function.client.TGS_Func_OutTyped_In1;
 import com.tugalsan.api.log.client.*;
 
 import com.tugalsan.api.unsafe.client.*;
@@ -10,6 +11,34 @@ import com.tugalsan.api.unsafe.client.*;
 public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallback, IsSerializable {
 
     final private static TGC_Log d = TGC_Log.of(TGC_SGWTResponse.class);
+    final public static String CANNOT_FETCH_REQUEST = "CANNOT_FETCH_REQUEST";
+    final public static String CANNOT_FETCH_CLIENTIP = "CANNOT_FETCH_CLIENTIP";
+    final public static String CANNOT_FIND_SERVLET = "CANNOT_FIND_SERVLET";
+    final public static String VALIDATE_RESULT_TIMEOUT = "VALIDATE_RESULT_TIMEOUT";
+    final public static String VALIDATE_RESULT_EMPTY = "VALIDATE_RESULT_EMPTY";
+    final public static String VALIDATE_RESULT_FALSE = "VALIDATE_RESULT_FALSE";
+    final public static String VALIDATE_RESULT_KILLED = "VALIDATE_RESULT_KILLED";
+    public static TGS_Func_OutTyped_In1<String, String> onSuccess_and_exceptionMessageNotNull = errMsg -> {
+        if (errMsg.contains(CANNOT_FETCH_REQUEST)) {
+            return "UYARI: " + CANNOT_FETCH_REQUEST + " Hizmet sağlayıcı aktif değil; beklemek işe yaramaz ise, IT departmanından programın tekrar başlatılması için isteyiniz. Detaylar: " + errMsg;
+        }
+        if (errMsg.contains(CANNOT_FETCH_CLIENTIP)) {
+            return "UYARI: " + CANNOT_FETCH_CLIENTIP + " Müşteri kimliği algılanamadı; kod hatası veya güvenlik ihlali söz konusu olabilir; Kod güncellemeleri için tüm sekmeleri kapatınız; geçmişi siliniz; tekrar giriniz. Detaylar: " + errMsg;
+        }
+        if (errMsg.contains(CANNOT_FIND_SERVLET)) {
+            return "UYARI: " + CANNOT_FIND_SERVLET + " Hizmet sağlayıcı isteğe cevap vermiyor; yeniden başlıyor olabilir; beklemek işe yaramaz ise, IT departmanından programın tekrar başlatılması için isteyiniz. Detaylar: " + errMsg;
+        }
+        if (errMsg.contains(VALIDATE_RESULT_TIMEOUT)) {
+            return "UYARI: " + VALIDATE_RESULT_TIMEOUT + " İstek zaman aşımına uğramış; [Tablo]'da [İşlemler]'den [max-saniye]'yi arttırabilirsiniz Detaylar: " + errMsg;
+        }
+        if (errMsg.contains(VALIDATE_RESULT_EMPTY)) {
+            return "UYARI: " + VALIDATE_RESULT_EMPTY + " Doğrulama sonucu boş döndü; kod hatası veya güvenlik ihlali söz konusu olabilir; Ne yaparken bu hatayı aldığınız konusunda IT departmanını bilgilendiriniz. Detaylar: " + errMsg;
+        }
+        if (errMsg.contains(VALIDATE_RESULT_FALSE)) {
+            return "UYARI: " + VALIDATE_RESULT_FALSE + " Kullancı çıkmış veya yetkilendirilmiş gün sayısından daha önceki bir kayıtta değişiklik yapılmaya çalışılmış] olabilir. Kullanıcı çıkmış ise, tüm sekmeleri kapatıp tekrar girin. Yetkilendirmeler için Üst yönetime başvurunuz Detaylar: " + errMsg;
+        }
+        return errMsg;
+    };
 
     private static String PREFIX_SERVER_DOWN_MESSAGE() {
         return "0  ";
@@ -82,13 +111,7 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
         d.ci("onSuccess", "#5");
         if (funcBase.getExceptionMessage() != null) {
             d.ci("onSuccess", "#6");
-            var errMsg = funcBase.getExceptionMessage();
-            if (errMsg.contains("cannot run (validate)")) {
-                errMsg = "[UYARI: Zaman aşımına uğramış veya yetkilendirilmiş gün sayısından daha önceki bir kayıtta değişiklik yapılmaya çalışılmış olabilir. Zaman aşımına Uğramış ise, İşlemler'den max-saniyeyi arttırabilirsiniz!]" + errMsg;
-            }
-            d.ci("onSuccess", "#7");
-            onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> getMessage: " + errMsg));
-            d.ci("onSuccess", "#8");
+            onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> getMessage: " + onSuccess_and_exceptionMessageNotNull.call(funcBase.getExceptionMessage())));
             return;
         }
         d.ci("onSuccess", "#10");

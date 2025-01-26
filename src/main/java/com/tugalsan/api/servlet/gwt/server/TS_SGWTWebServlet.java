@@ -28,15 +28,15 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
             d.ci("call", "funcBase", funcBase);
             var request = TGS_UnSafe.call(() -> getThreadLocalRequest(), e -> null);
             if (request == null) {
-                return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " cannot fetch request");
+                return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " (" + TGC_SGWTResponse.CANNOT_FETCH_REQUEST + ")");
             }
             var clientIp = TGS_UnSafe.call(() -> TS_NetworkIPUtils.getIPClient(request), e -> null);
             if (clientIp == null) {
-                return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " cannot fetch clientIp");
+                return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " (" + TGC_SGWTResponse.CANNOT_FETCH_CLIENTIP + ")");
             }
             var si = TS_SGWTExecutorList.get(funcBase.getSuperClassName());
             if (si == null) {
-                return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " cannot find for clientIp " + clientIp + ":\n" + getServletData());
+                return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " (" + TGC_SGWTResponse.CANNOT_FIND_SERVLET + ") " + funcBase.getSuperClassName() + ", for clientIp " + clientIp + ":\n" + getServletData());
             }
             TGS_Func_OutTyped_In1<Boolean, TS_ThreadSyncTrigger> callable = kt -> {
                 return TGS_UnSafe.call(() -> {
@@ -54,20 +54,20 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
             if (config.enableTimeout) {
                 var await = TS_ThreadAsyncAwait.callSingle(killTrigger, Duration.ofSeconds(si.value1.timeout_seconds()), callable);
                 if (await.timeout()) {
-                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " cannot run (timeout) for clientIp " + clientIp);
+                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_TIMEOUT + ") for clientIp " + clientIp);
                     return funcBase;
                 }
                 if (await.resultIfSuccessful.isEmpty()) {
-                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " cannot run (unknown) for clientIp " + clientIp);
+                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_EMPTY + ") for clientIp " + clientIp);
                     return funcBase;
                 }
                 if (!await.resultIfSuccessful.get()) {
-                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " cannot run (validate) for clientIp " + clientIp);
+                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_FALSE + ") for clientIp " + clientIp);
                     return funcBase;
                 }
             } else {
                 if (!callable.call(killTrigger)) {
-                    handleError(funcBase, "ERROR(SYNC):" + si.value1.getClass().toString() + " cannot run (validate) for clientIp " + clientIp);
+                    handleError(funcBase, "ERROR(SYNC):" + si.value1.getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_KILLED + ") for clientIp " + clientIp);
                     return funcBase;
                 }
             }

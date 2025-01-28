@@ -52,7 +52,9 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
                 });
             };
             if (config.enableTimeout) {
-                var await = TS_ThreadAsyncAwait.callSingle(killTrigger, Duration.ofSeconds(si.value1.timeout_seconds()), callable);
+                var callableKillTrigger = killTrigger.ofParent(killTrigger);
+                var await = TS_ThreadAsyncAwait.callSingle(callableKillTrigger, Duration.ofSeconds(si.value1.timeout_seconds()), callable);
+                callableKillTrigger.trigger();
                 if (await.timeout()) {
                     handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_TIMEOUT + ") for clientIp " + clientIp);
                     return funcBase;

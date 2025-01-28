@@ -1,12 +1,12 @@
 package com.tugalsan.api.servlet.gwt.server;
 
-
-import com.tugalsan.api.function.client.TGS_Func_In3;
+import com.tugalsan.api.function.client.TGS_Func_In4;
 import javax.servlet.http.HttpServletRequest;
 import com.tugalsan.api.tuple.client.*;
 import com.tugalsan.api.servlet.gwt.client.TGS_SGWTFuncBase;
+import com.tugalsan.api.thread.server.sync.TS_ThreadSyncTrigger;
 
-abstract public class TS_SGWTExecutor implements TGS_Func_In3<HttpServletRequest, TGS_SGWTFuncBase, Object> {
+abstract public class TS_SGWTExecutor implements TGS_Func_In4<TS_ThreadSyncTrigger, HttpServletRequest, TGS_SGWTFuncBase, Object> {
 
     abstract public String name();
 
@@ -14,13 +14,13 @@ abstract public class TS_SGWTExecutor implements TGS_Func_In3<HttpServletRequest
         return 60;
     }
 
-    abstract public TGS_Tuple2<Boolean, Object> validate(HttpServletRequest request, TGS_SGWTFuncBase funcBase);
+    abstract public TGS_Tuple2<Boolean, Object> validate(TS_ThreadSyncTrigger servletKillTrigger, HttpServletRequest request, TGS_SGWTFuncBase funcBase);
 
-    public static void ifValidExecute(TS_SGWTExecutor executor, HttpServletRequest rq, TGS_SGWTFuncBase funcBase) {
-        var pack = executor.validate(rq, funcBase);
+    public static void ifValidExecute(TS_ThreadSyncTrigger servletKillTrigger, TS_SGWTExecutor executor, HttpServletRequest rq, TGS_SGWTFuncBase funcBase) {
+        var pack = executor.validate(servletKillTrigger, rq, funcBase);
         if (!pack.value0) {
             return;
         }
-        executor.run(rq, funcBase, pack.value1);
+        executor.run(servletKillTrigger, rq, funcBase, pack.value1);
     }
 }

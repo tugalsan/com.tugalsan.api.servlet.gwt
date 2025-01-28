@@ -38,13 +38,13 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
             if (si == null) {
                 return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " (" + TGC_SGWTResponse.CANNOT_FIND_SERVLET + ") " + funcBase.getSuperClassName() + ", for clientIp " + clientIp + ":\n" + getServletData());
             }
-            TGS_Func_OutTyped_In1<Boolean, TS_ThreadSyncTrigger> callable = kt -> {
+            TGS_Func_OutTyped_In1<Boolean, TS_ThreadSyncTrigger> callable = servletKillTrigger -> {
                 return TGS_UnSafe.call(() -> {
-                    var validationResult = si.value1.validate(request, funcBase);
+                    var validationResult = si.value1.validate(servletKillTrigger, request, funcBase);
                     if (!validationResult.value0) {
                         return false;
                     }
-                    si.value1.run(request, funcBase, validationResult.value1);
+                    si.value1.run(servletKillTrigger, request, funcBase, validationResult.value1);
                     return true;
                 }, e -> {
                     d.ct("call", e);
@@ -52,9 +52,9 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
                 });
             };
             if (config.enableTimeout) {
-                var callableKillTrigger = killTrigger.ofParent(killTrigger);
-                var await = TS_ThreadAsyncAwait.callSingle(callableKillTrigger, Duration.ofSeconds(si.value1.timeout_seconds()), callable);
-                callableKillTrigger.trigger();
+                var servletKillTrigger = TS_ThreadSyncTrigger.ofParent(killTrigger);
+                var await = TS_ThreadAsyncAwait.callSingle(servletKillTrigger, Duration.ofSeconds(si.value1.timeout_seconds()), callable);
+                servletKillTrigger.trigger();
                 if (await.timeout()) {
                     handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_TIMEOUT + ") for clientIp " + clientIp);
                     return funcBase;

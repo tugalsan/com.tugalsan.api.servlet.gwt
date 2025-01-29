@@ -40,11 +40,11 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
             }
             TGS_Func_OutTyped_In1<Boolean, TS_ThreadSyncTrigger> callable = servletKillTrigger -> {
                 return TGS_UnSafe.call(() -> {
-                    var validationResult = si.value1.validate(servletKillTrigger, request, funcBase);
-                    if (!validationResult.value0) {
+                    var validationResult = si.exe().validate(servletKillTrigger, request, funcBase);
+                    if (!validationResult.result()) {
                         return false;
                     }
-                    si.value1.run(servletKillTrigger, request, funcBase, validationResult.value1);
+                    si.exe().run(servletKillTrigger, request, funcBase, validationResult.data());
                     return true;
                 }, e -> {
                     d.ct("call", e);
@@ -53,23 +53,23 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
             };
             if (config.enableTimeout) {
                 var servletKillTrigger = TS_ThreadSyncTrigger.ofParent(killTrigger);
-                var await = TS_ThreadAsyncAwait.callSingle(servletKillTrigger, Duration.ofSeconds(si.value1.timeout_seconds()), callable);
+                var await = TS_ThreadAsyncAwait.callSingle(servletKillTrigger, Duration.ofSeconds(si.exe().timeout_seconds()), callable);
                 servletKillTrigger.trigger();
                 if (await.timeout()) {
-                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_TIMEOUT + ") for clientIp " + clientIp);
+                    handleError(funcBase, "ERROR(AWAIT):" + si.exe().getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_TIMEOUT + ") for clientIp " + clientIp);
                     return funcBase;
                 }
                 if (await.resultIfSuccessful.isEmpty()) {
-                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_EMPTY + ") for clientIp " + clientIp);
+                    handleError(funcBase, "ERROR(AWAIT):" + si.exe().getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_EMPTY + ") for clientIp " + clientIp);
                     return funcBase;
                 }
                 if (!await.resultIfSuccessful.get()) {
-                    handleError(funcBase, "ERROR(AWAIT):" + si.value1.getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_FALSE + ") for clientIp " + clientIp);
+                    handleError(funcBase, "ERROR(AWAIT):" + si.exe().getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_FALSE + ") for clientIp " + clientIp);
                     return funcBase;
                 }
             } else {
                 if (!callable.call(killTrigger)) {
-                    handleError(funcBase, "ERROR(SYNC):" + si.value1.getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_KILLED + ") for clientIp " + clientIp);
+                    handleError(funcBase, "ERROR(SYNC):" + si.exe().getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_KILLED + ") for clientIp " + clientIp);
                     return funcBase;
                 }
             }
@@ -87,7 +87,7 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
     private static List<String> getServletData() {
         return TGS_StreamUtils.toLst(
                 TS_SGWTExecutorList.SYNC.stream()
-                        .map(item -> item.value0 + ":" + item.value1.getClass().getSimpleName())
+                        .map(item -> item.name() + ":" + item.exe().getClass().getSimpleName())
         );
     }
 }

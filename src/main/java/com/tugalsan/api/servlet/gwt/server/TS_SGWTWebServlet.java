@@ -60,7 +60,8 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
                     return funcBase;
                 }
                 if (await.hasError()) {
-                    d.ce("call", si.name(), "ERROR(AWAIT)", si.exe().timeout_seconds(), await.exceptionIfFailed.get().getMessage());
+                    d.ce("call", "ERROR(AWAIT)", si.exe().getClass().toString(), si.exe().timeout_seconds(), await.exceptionIfFailed.get().getMessage());
+                    d.ct("call", await.exceptionIfFailed.get());
 //                    return;
                 }
                 if (await.resultIfSuccessful.isEmpty()) {

@@ -3,14 +3,14 @@ package com.tugalsan.api.servlet.gwt.server;
 import java.util.*;
 import javax.servlet.annotation.*;
 import com.google.gwt.user.server.rpc.*;
-import com.tugalsan.api.function.client.TGS_Func_OutTyped_In1;
+import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCE_OutTyped_In1;
 import com.tugalsan.api.servlet.gwt.client.*;
 import com.tugalsan.api.log.server.*;
 import com.tugalsan.api.network.server.*;
 import com.tugalsan.api.stream.client.*;
-import com.tugalsan.api.thread.server.async.TS_ThreadAsyncAwait;
+import com.tugalsan.api.thread.server.async.await.TS_ThreadAsyncAwait;
 import com.tugalsan.api.thread.server.sync.TS_ThreadSyncTrigger;
-import com.tugalsan.api.unsafe.client.TGS_UnSafe;
+import com.tugalsan.api.function.client.maythrow.checkedexceptions.TGS_FuncMTCEUtils;
 import java.time.Duration;
 
 @WebServlet("/" + TGC_SGWTService.LOC_PARENT + "/" + TGC_SGWTService.LOC_NAME)//AS IN "/app/g"
@@ -23,14 +23,14 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
 //    private static final long serialVersionUID () 20201015L;
     @Override
     public TGS_SGWTFuncBase call(TGS_SGWTFuncBase funcBase) {
-        return TGS_UnSafe.call(() -> {
+        return TGS_FuncMTCEUtils.call(() -> {
             d.ci("call", "----------------------------------------------------------------");
             d.ci("call", "funcBase", funcBase);
-            var request = TGS_UnSafe.call(() -> getThreadLocalRequest(), e -> null);
+            var request = TGS_FuncMTCEUtils.call(() -> getThreadLocalRequest(), e -> null);
             if (request == null) {
                 return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " (" + TGC_SGWTResponse.CANNOT_FETCH_REQUEST + ")");
             }
-            var clientIp = TGS_UnSafe.call(() -> TS_NetworkIPUtils.getIPClient(request), e -> null);
+            var clientIp = TGS_FuncMTCEUtils.call(() -> TS_NetworkIPUtils.getIPClient(request), e -> null);
             if (clientIp == null) {
                 return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " (" + TGC_SGWTResponse.CANNOT_FETCH_CLIENTIP + ")");
             }
@@ -38,8 +38,8 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
             if (si == null) {
                 return handleError(funcBase, "ERROR:" + funcBase.getSuperClassName() + " (" + TGC_SGWTResponse.CANNOT_FIND_SERVLET + ") " + funcBase.getSuperClassName() + ", for clientIp " + clientIp + ":\n" + getServletData());
             }
-            TGS_Func_OutTyped_In1<Boolean, TS_ThreadSyncTrigger> callable = servletKillTrigger -> {
-                return TGS_UnSafe.call(() -> {
+            TGS_FuncMTUCE_OutTyped_In1<Boolean, TS_ThreadSyncTrigger> callable = servletKillTrigger -> {
+                return TGS_FuncMTCEUtils.call(() -> {
                     var validationResult = si.exe().validate(servletKillTrigger, request, funcBase);
                     if (!validationResult.result()) {
                         return false;

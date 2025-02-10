@@ -1,13 +1,14 @@
 package com.tugalsan.api.servlet.gwt.client;
 
 import com.google.gwt.user.client.rpc.*;
-import com.tugalsan.api.function.client.TGS_Func;
-import com.tugalsan.api.function.client.TGS_Func_In1;
-import com.tugalsan.api.function.client.TGS_Func_OutTyped;
-import com.tugalsan.api.function.client.TGS_Func_OutTyped_In1;
+import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCE_In1;
+import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCE_OutTyped_In1;
 import com.tugalsan.api.log.client.*;
 
-import com.tugalsan.api.unsafe.client.*;
+
+import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCE;
+import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCEUtils;
+import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCE_OutTyped;
 
 public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallback, IsSerializable {
 
@@ -19,10 +20,10 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
     final public static String VALIDATE_RESULT_EMPTY = "VALIDATE_RESULT_EMPTY";
     final public static String VALIDATE_RESULT_FALSE = "VALIDATE_RESULT_FALSE";
     final public static String VALIDATE_RESULT_KILLED = "VALIDATE_RESULT_KILLED";
-    public static TGS_Func_OutTyped<Boolean> isUserOut = () -> {
+    public static TGS_FuncMTUCE_OutTyped<Boolean> isUserOut = () -> {
         return null;//TGC_LibLoginCardUtils.async(_loginCard -> {});
     };
-    public static TGS_Func_OutTyped_In1<String, String> onSuccess_and_exceptionMessageNotNull = errMsg -> {
+    public static TGS_FuncMTUCE_OutTyped_In1<String, String> onSuccess_and_exceptionMessageNotNull = errMsg -> {
         if (errMsg.contains(CANNOT_FETCH_REQUEST)) {
             return "UYARI: Hizmet sağlayıcı aktif değil; beklemek işe yaramaz ise, IT departmanından programın tekrar başlatılması için isteyiniz. Detaylar: " + errMsg;
         }
@@ -64,14 +65,14 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
     public TGC_SGWTResponse() {
     }
 
-    public TGC_SGWTResponse(TGS_Func_In1<T> runnable, TGS_Func_In1<Throwable> onFail, TGS_Func closure) {
+    public TGC_SGWTResponse(TGS_FuncMTUCE_In1<T> runnable, TGS_FuncMTUCE_In1<Throwable> onFail, TGS_FuncMTUCE closure) {
         this.runnable = runnable;
         this.onFail = onFail;
         this.closure = closure;
     }
-    private TGS_Func_In1<T> runnable;
-    private TGS_Func_In1<Throwable> onFail;
-    private TGS_Func closure;
+    private TGS_FuncMTUCE_In1<T> runnable;
+    private TGS_FuncMTUCE_In1<Throwable> onFail;
+    private TGS_FuncMTUCE closure;
 
     @Override
     final public void onFailure(Throwable caught) {
@@ -92,7 +93,7 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
                 d.ce("onFailure", "HATA: Server makinesinde hata oluştu! Ayrıntılar için server makinesinin hata kayıtlarına bakınız. (Hiç işlem yapamıyorsanız, kullanıcı girişinizi kontrol edebilirsiniz.)");
             } else {
                 d.ci("onFailure", "onFail == null", "#5");
-                d.ce("onFailure", "HATA: " + caught.getMessage().replace("class com.tugalsan.api.unsafe.client.TGS_UnSafe.toRuntimeException->CLASS[TGC_SGWTResponse]", "TGC_SGWTResponse"));
+                d.ce("onFailure", "HATA: " + caught.getMessage().replace("class com.tugalsan.api.function.client.TGS_FuncMTUCEUtils.toRuntimeException->CLASS[TGC_SGWTResponse]", "TGC_SGWTResponse"));
             }
         } else {
             d.ci("onFailure", "onFail != null", "#6");
@@ -111,12 +112,12 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
         d.ci("onSuccess", "#1", response);
         if (response == null) {
             d.ci("onSuccess", "#2");
-            onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> response==null"));
+            onFailure(TGS_FuncMTUCEUtils.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> response==null"));
             return;
         }
         if (!(response instanceof TGS_SGWTFuncBase)) {
             d.ci("onSuccess", "#3");
-            onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: !(response instanceof " + TGS_SGWTFuncBase.class.getSimpleName() + "): " + response));
+            onFailure(TGS_FuncMTUCEUtils.toRuntimeException(d.className, "onSuccess", "ERROR: !(response instanceof " + TGS_SGWTFuncBase.class.getSimpleName() + "): " + response));
             return;
         }
         d.ci("onSuccess", "#4");
@@ -124,7 +125,7 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
         d.ci("onSuccess", "#5");
         if (funcBase.getExceptionMessage() != null) {
             d.ci("onSuccess", "#6");
-            onFailure(TGS_UnSafe.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> getMessage: " + onSuccess_and_exceptionMessageNotNull.call(funcBase.getExceptionMessage())));
+            onFailure(TGS_FuncMTUCEUtils.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> getMessage: " + onSuccess_and_exceptionMessageNotNull.call(funcBase.getExceptionMessage())));
             return;
         }
         d.ci("onSuccess", "#10");

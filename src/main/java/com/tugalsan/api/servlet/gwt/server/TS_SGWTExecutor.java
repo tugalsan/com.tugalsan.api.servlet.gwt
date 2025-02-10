@@ -1,11 +1,11 @@
 package com.tugalsan.api.servlet.gwt.server;
 
-import com.tugalsan.api.function.client.TGS_Func_In4;
+import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCE_In4;
 import javax.servlet.http.HttpServletRequest;
 import com.tugalsan.api.servlet.gwt.client.TGS_SGWTFuncBase;
 import com.tugalsan.api.thread.server.sync.TS_ThreadSyncTrigger;
 
-abstract public class TS_SGWTExecutor implements TGS_Func_In4<TS_ThreadSyncTrigger, HttpServletRequest, TGS_SGWTFuncBase, Object> {
+abstract public class TS_SGWTExecutor implements TGS_FuncMTUCE_In4<TS_ThreadSyncTrigger, HttpServletRequest, TGS_SGWTFuncBase, Object> {
 
     abstract public String name();
 

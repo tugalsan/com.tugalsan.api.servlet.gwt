@@ -54,8 +54,7 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
             if (config.enableTimeout) {
                 var servletKillTrigger = TS_ThreadSyncTrigger.of(funcBase.getSuperClassName(), killTrigger);
                 var await = TS_ThreadAsyncAwait.callSingle(servletKillTrigger.newChild(d.className), Duration.ofSeconds(si.exe().timeout_seconds()), callable);
-                d.cr("call", "servletKillTrigger.trigger();");
-                servletKillTrigger.trigger();
+                servletKillTrigger.trigger("sgwt_post_await");
                 if (await.timeout()) {
                     handleError(funcBase, "ERROR(AWAIT):" + si.exe().getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_TIMEOUT + ") for clientIp " + clientIp);
                     return funcBase;

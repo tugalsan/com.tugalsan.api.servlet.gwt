@@ -51,10 +51,11 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
                     return false;
                 });
             };
-            var servletKillTrigger = TS_ThreadSyncTrigger.of(funcBase.getSuperClassName(), killTrigger);
+            var servletKillTrigger_wt = TS_ThreadSyncTrigger.of(funcBase.getSuperClassName(), killTrigger).newChild(d.className);
             if (config.enableTimeout) {
-                var await = TS_ThreadAsyncAwait.callSingle(servletKillTrigger.newChild(d.className).newChild("config.enableTimeout"), Duration.ofSeconds(si.exe().timeout_seconds()), callable);
-                servletKillTrigger.trigger("sgwt_post_await");
+                var servletKillTrigger_await_wt = servletKillTrigger_wt.newChild("await");
+                var await = TS_ThreadAsyncAwait.callSingle(servletKillTrigger_await_wt, Duration.ofSeconds(si.exe().timeout_seconds()), callable);
+                servletKillTrigger_await_wt.trigger("sgwt_post_await");
                 if (await.timeout()) {
                     handleError(funcBase, "ERROR(AWAIT):" + si.exe().getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_TIMEOUT + ") for clientIp " + clientIp);
                     return funcBase;
@@ -73,12 +74,13 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
                     return funcBase;
                 }
             } else {
-                if (!callable.call(servletKillTrigger.newChild(d.className).newChild("!config.enableTimeout"))) {
+                var servletKillTrigger_run_wt = servletKillTrigger_wt.newChild("run");
+                if (!callable.call(servletKillTrigger_run_wt)) {
                     handleError(funcBase, "ERROR(SYNC):" + si.exe().getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_KILLED + ") for clientIp " + clientIp);
-                    servletKillTrigger.trigger("surl_post_run_failed");
+                    servletKillTrigger_run_wt.trigger("surl_post_run_failed");
                     return funcBase;
                 }
-                servletKillTrigger.trigger("surl_post_run_ok");
+                servletKillTrigger_run_wt.trigger("surl_post_run_ok");
             }
             d.ci("call", "executed", "config.enableTimeout", config.enableTimeout, funcBase.getSuperClassName(), "ex:" + funcBase.getExceptionMessage());
             return funcBase;

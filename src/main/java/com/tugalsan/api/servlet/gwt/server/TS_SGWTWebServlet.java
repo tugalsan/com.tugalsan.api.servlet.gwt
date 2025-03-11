@@ -51,9 +51,9 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
                     return false;
                 });
             };
+            var servletKillTrigger = TS_ThreadSyncTrigger.of(funcBase.getSuperClassName(), killTrigger);
             if (config.enableTimeout) {
-                var servletKillTrigger = TS_ThreadSyncTrigger.of(funcBase.getSuperClassName(), killTrigger);
-                var await = TS_ThreadAsyncAwait.callSingle(servletKillTrigger.newChild(d.className), Duration.ofSeconds(si.exe().timeout_seconds()), callable);
+                var await = TS_ThreadAsyncAwait.callSingle(servletKillTrigger.newChild(d.className).newChild("config.enableTimeout"), Duration.ofSeconds(si.exe().timeout_seconds()), callable);
                 servletKillTrigger.trigger("sgwt_post_await");
                 if (await.timeout()) {
                     handleError(funcBase, "ERROR(AWAIT):" + si.exe().getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_TIMEOUT + ") for clientIp " + clientIp);
@@ -73,10 +73,12 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
                     return funcBase;
                 }
             } else {
-                if (!callable.call(killTrigger)) {
+                if (!callable.call(servletKillTrigger.newChild(d.className).newChild("!config.enableTimeout"))) {
                     handleError(funcBase, "ERROR(SYNC):" + si.exe().getClass().toString() + " (" + TGC_SGWTResponse.VALIDATE_RESULT_KILLED + ") for clientIp " + clientIp);
+                    servletKillTrigger.trigger("surl_post_run_failed");
                     return funcBase;
                 }
+                servletKillTrigger.trigger("surl_post_run_ok");
             }
             d.ci("call", "executed", "config.enableTimeout", config.enableTimeout, funcBase.getSuperClassName(), "ex:" + funcBase.getExceptionMessage());
             return funcBase;

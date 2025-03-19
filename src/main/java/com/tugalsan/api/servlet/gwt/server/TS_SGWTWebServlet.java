@@ -17,10 +17,14 @@ import java.time.Duration;
 public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTServiceInterface {
 
     final private static TS_Log d = TS_Log.of(false, TS_SGWTWebServlet.class);
-    public static volatile TS_ThreadSyncTrigger killTrigger = null;
     public static volatile TS_SGWTConfig config = TS_SGWTConfig.of();
 
+    public static void warmUp(TS_ThreadSyncTrigger killTrigger) {
+        TS_SGWTWebServlet.killTrigger = killTrigger;
+    }
+    private static volatile TS_ThreadSyncTrigger killTrigger = null;
 //    private static final long serialVersionUID () 20201015L;
+
     @Override
     public TGS_SGWTFuncBase call(TGS_SGWTFuncBase funcBase) {
         return TGS_FuncMTCEUtils.call(() -> {

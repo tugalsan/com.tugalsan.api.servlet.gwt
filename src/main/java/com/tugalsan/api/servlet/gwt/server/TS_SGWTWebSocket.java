@@ -1,6 +1,6 @@
 package com.tugalsan.api.servlet.gwt.server;
 
-import com.tugalsan.api.function.client.maythrow.checkedexceptions.TGS_FuncMTCEUtils;
+import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
 import com.tugalsan.api.union.client.TGS_UnionExcuse;
 
 import java.io.*;
@@ -12,7 +12,7 @@ public class TS_SGWTWebSocket {
 
 //    final private static TS_Log d = TS_Log.of(TS_SGWTWebSocket.class);
     private TGS_UnionExcuse<String> onBroadcast(Session session, String msg) {
-        return TGS_FuncMTCEUtils.call(() -> {
+        return TGS_FuncMTCUtils.call(() -> {
             for (var s : session.getOpenSessions()) {
                 s.getBasicRemote().sendText("onBroadcast: " + msg);
             }
@@ -44,7 +44,7 @@ public class TS_SGWTWebSocket {
     }
 
 //    public static testClient(TGS_Url url) {
-//        TGS_FuncMTCEUtils.run(() -> {
+//        TGS_FuncMTCUtils.run(() -> {
 //            var parser = TGS_UrlParser.of(url);
 //            var url = TGS_Url.of("wss://" + parser.host.domain + ":" + parser.host.port + "/" + parser.path.paths.get(0) + "/ws");
 //            var client = new TS_SGWTWebSocket();

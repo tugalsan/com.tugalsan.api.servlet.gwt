@@ -1,35 +1,35 @@
 package com.tugalsan.api.servlet.gwt.client;
 
-import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCE_In1;
+import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTU_In1;
 import com.tugalsan.api.log.client.*;
 import com.tugalsan.api.time.client.TGS_Time;
-import com.tugalsan.api.function.client.maythrow.uncheckedexceptions.TGS_FuncMTUCE;
+import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTU;
 
 public class TGC_SGWTCalller {
 
     final private static TGC_Log d = TGC_Log.of(TGC_SGWTCalller.class);
 
-    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_FuncMTUCE_In1<T> runnable) {
+    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_FuncMTU_In1<T> runnable) {
         async(func, runnable, null, null);
     }
 
-    public static <T extends TGS_SGWTFuncBase> void async(boolean periodic, T func, TGS_FuncMTUCE_In1<T> runnable) {
+    public static <T extends TGS_SGWTFuncBase> void async(boolean periodic, T func, TGS_FuncMTU_In1<T> runnable) {
         async(periodic, func, runnable, null, null);
     }
 
-    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_FuncMTUCE_In1<T> runnable, TGS_FuncMTUCE closure) {
+    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_FuncMTU_In1<T> runnable, TGS_FuncMTU closure) {
         async(func, runnable, null, closure);
     }
 
-    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_FuncMTUCE_In1<T> runnable, TGS_FuncMTUCE_In1<Throwable> onFail) {
+    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_FuncMTU_In1<T> runnable, TGS_FuncMTU_In1<Throwable> onFail) {
         async(func, runnable, onFail, null);
     }
 
-    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_FuncMTUCE_In1<T> runnable, TGS_FuncMTUCE_In1<Throwable> onFail, TGS_FuncMTUCE closure) {
+    public static <T extends TGS_SGWTFuncBase> void async(T func, TGS_FuncMTU_In1<T> runnable, TGS_FuncMTU_In1<Throwable> onFail, TGS_FuncMTU closure) {
         async(false, func, runnable, onFail, closure);
     }
 
-    public static <T extends TGS_SGWTFuncBase> void async(boolean periodic, T func, TGS_FuncMTUCE_In1<T> runnable, TGS_FuncMTUCE_In1<Throwable> onFail, TGS_FuncMTUCE closure) {
+    public static <T extends TGS_SGWTFuncBase> void async(boolean periodic, T func, TGS_FuncMTU_In1<T> runnable, TGS_FuncMTU_In1<Throwable> onFail, TGS_FuncMTU closure) {
         if (!periodic) {
             lastTime.setToTodayAndNow();
         }

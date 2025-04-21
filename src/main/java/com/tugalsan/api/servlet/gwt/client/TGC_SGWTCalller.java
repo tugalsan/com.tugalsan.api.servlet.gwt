@@ -6,6 +6,10 @@ import com.tugalsan.api.time.client.TGS_Time;
 import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTU;
 
 public class TGC_SGWTCalller {
+    
+    private TGC_SGWTCalller(){
+        
+    }
 
     final private static TGC_Log d = TGC_Log.of(TGC_SGWTCalller.class);
 
@@ -34,7 +38,7 @@ public class TGC_SGWTCalller {
             lastTime.setToTodayAndNow();
         }
         d.ci("async", func.getSuperClassName(), func);
-        TGC_SGWTService.getServiceInstance().call(func, new TGC_SGWTResponse(runnable, onFail, closure));
+        TGC_SGWTService.singleton().call(func, new TGC_SGWTResponse(runnable, onFail, closure));
     }
     public static final TGS_Time lastTime = TGS_Time.of();
 
@@ -53,7 +57,7 @@ public class TGC_SGWTCalller {
     public static <T extends TGS_SGWTFuncBase> T syncCompletableFuture(T func) {
         tryy {
             var future = new CompletableFuture<TGS_SGWTFuncBase>();
-            TGC_SGWTService.getServiceInstance().call(func, new AsyncCallback<TGS_SGWTFuncBase>() {
+            TGC_SGWTService.singleton().call(func, new AsyncCallback<TGS_SGWTFuncBase>() {
                 @Override
                 public void onFailure(Throwable t) {
                     future.completeExceptionally(t);

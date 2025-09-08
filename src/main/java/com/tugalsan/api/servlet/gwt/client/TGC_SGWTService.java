@@ -13,18 +13,13 @@ public class TGC_SGWTService {
     final public static String LOC_NAME = "g";//TS_SGWTWebServlet need it static
 
     public static TGS_SGWTServiceInterfaceAsync singleton() {
-        if (SYNC != null) {
-            return SYNC;
-        }
-        synchronized (TGC_SGWTService.class) {
-            if (SYNC == null) {
-                SYNC = (TGS_SGWTServiceInterfaceAsync) GWT.create(TGS_SGWTServiceInterface.class);
-                var endpoint = (ServiceDefTarget) SYNC;
-                var moduleRelativeURL = GWT.getModuleBaseURL() + LOC_NAME;
-                endpoint.setServiceEntryPoint(moduleRelativeURL);
-            }
-        }
-        return SYNC;
+        return SYNC.orElseSet(() -> {
+            var a = (TGS_SGWTServiceInterfaceAsync) GWT.create(TGS_SGWTServiceInterface.class);
+            var endpoint = (ServiceDefTarget) a;
+            var moduleRelativeURL = GWT.getModuleBaseURL() + LOC_NAME;
+            endpoint.setServiceEntryPoint(moduleRelativeURL);
+            return a;
+        });
     }
-    private static volatile TGS_SGWTServiceInterfaceAsync SYNC;
+    private static volatile StableValue<TGS_SGWTServiceInterfaceAsync> SYNC = StableValue.of();
 }

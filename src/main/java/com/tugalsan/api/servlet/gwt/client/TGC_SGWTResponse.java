@@ -112,12 +112,12 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
         d.ci("onSuccess", "#1", response);
         if (response == null) {
             d.ci("onSuccess", "#2");
-            onFailure(TGS_FuncMTUUtils.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> response==null"));
+            onFailure(TGS_FuncMTUUtils.toRuntimeException(d.className(), "onSuccess", "ERROR: onSuccess -> response==null"));
             return;
         }
         if (!(response instanceof TGS_SGWTFuncBase)) {
             d.ci("onSuccess", "#3");
-            onFailure(TGS_FuncMTUUtils.toRuntimeException(d.className, "onSuccess", "ERROR: !(response instanceof " + TGS_SGWTFuncBase.class.getSimpleName() + "): " + response));
+            onFailure(TGS_FuncMTUUtils.toRuntimeException(d.className(), "onSuccess", "ERROR: !(response instanceof " + TGS_SGWTFuncBase.class.getSimpleName() + "): " + response));
             return;
         }
         d.ci("onSuccess", "#4");
@@ -125,7 +125,7 @@ public class TGC_SGWTResponse<T extends TGS_SGWTFuncBase> implements AsyncCallba
         d.ci("onSuccess", "#5");
         if (funcBase.getExceptionMessage() != null) {
             d.ci("onSuccess", "#6");
-            onFailure(TGS_FuncMTUUtils.toRuntimeException(d.className, "onSuccess", "ERROR: onSuccess -> getMessage: " + onSuccess_and_exceptionMessageNotNull.call(funcBase.getExceptionMessage())));
+            onFailure(TGS_FuncMTUUtils.toRuntimeException(d.className(), "onSuccess", "ERROR: onSuccess -> getMessage: " + onSuccess_and_exceptionMessageNotNull.call(funcBase.getExceptionMessage())));
             return;
         }
         d.ci("onSuccess", "#10");

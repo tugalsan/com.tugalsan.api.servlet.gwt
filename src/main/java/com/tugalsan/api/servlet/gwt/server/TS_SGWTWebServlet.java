@@ -55,7 +55,7 @@ public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTS
                     return false;
                 });
             };
-            var servletKillTrigger_wt = TS_ThreadSyncTrigger.of(funcBase.getSuperClassName(), killTrigger).newChild(d.className);
+            var servletKillTrigger_wt = TS_ThreadSyncTrigger.of(funcBase.getSuperClassName(), killTrigger).newChild(d.className());
             if (config.enableTimeout) {
                 var servletKillTrigger_await_wt = servletKillTrigger_wt.newChild("await");
                 var await = TS_ThreadAsyncAwait.callSingle(servletKillTrigger_await_wt, Duration.ofSeconds(si.exe().timeout_seconds()), callable);

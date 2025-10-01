@@ -1,11 +1,9 @@
 package com.tugalsan.api.servlet.gwt.server;
 
-import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
-import com.tugalsan.api.union.client.TGS_UnionExcuse;
-
+import module com.tugalsan.api.function;
+import module com.tugalsan.api.union;
+import module javax.websocket.api;
 import java.io.*;
-import javax.websocket.*;
-import javax.websocket.server.*;
 
 @ServerEndpoint("/ws")
 public class TS_SGWTWebSocket {

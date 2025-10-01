@@ -1,17 +1,15 @@
 package com.tugalsan.api.servlet.gwt.server;
 
+import module com.tugalsan.api.servlet.gwt;
+import module com.tugalsan.api.log;
+import module com.tugalsan.api.network;
+import module com.tugalsan.api.stream;
+import module com.tugalsan.api.thread;
+import module com.tugalsan.api.function;
+import module gwt.user;
+import module javax.servlet.api;
 import java.util.*;
-import javax.servlet.annotation.*;
-import com.google.gwt.user.server.rpc.*;
-import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTU_OutTyped_In1;
-import com.tugalsan.api.servlet.gwt.client.*;
-import com.tugalsan.api.log.server.*;
-import com.tugalsan.api.network.server.*;
-import com.tugalsan.api.stream.client.*;
-import com.tugalsan.api.thread.server.async.await.TS_ThreadAsyncAwait;
-import com.tugalsan.api.thread.server.sync.TS_ThreadSyncTrigger;
-import com.tugalsan.api.function.client.maythrowexceptions.checked.TGS_FuncMTCUtils;
-import java.time.Duration;
+import java.time.*;
 
 @WebServlet("/" + TGC_SGWTService.LOC_PARENT + "/" + TGC_SGWTService.LOC_NAME)//AS IN "/app/g"
 public class TS_SGWTWebServlet extends RemoteServiceServlet implements TGS_SGWTServiceInterface {

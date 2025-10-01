@@ -1,9 +1,9 @@
 package com.tugalsan.api.servlet.gwt.server;
 
-import com.tugalsan.api.function.client.maythrowexceptions.unchecked.TGS_FuncMTU_In4;
-import javax.servlet.http.HttpServletRequest;
-import com.tugalsan.api.servlet.gwt.client.TGS_SGWTFuncBase;
-import com.tugalsan.api.thread.server.sync.TS_ThreadSyncTrigger;
+import module com.tugalsan.api.function;
+import module com.tugalsan.api.thread;
+import module com.tugalsan.api.servlet.gwt;
+import module javax.servlet.api;
 
 abstract public class TS_SGWTExecutor implements TGS_FuncMTU_In4<TS_ThreadSyncTrigger, HttpServletRequest, TGS_SGWTFuncBase, Object> {
 
